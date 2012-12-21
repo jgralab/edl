@@ -1,0 +1,36 @@
+module grammar/terms/CharacterClass
+
+imports
+	grammar/terms/Character
+
+hiddens
+	sorts CharClass CharRanges CharRange
+
+exports
+	sorts Term
+	
+	context-free syntax
+		CharClass -> Term {cons("char-class"),definedAs("CharClass -> Term {cons(\"char-class\")}")}
+		
+		"[" CharRanges? "]"			-> CharClass {cons("simple-charclass"),definedAs("\"[\" CharRanges? \"]\" -> CharClass {cons(\"simple-charclass\")}")}
+		"~" CharClass				-> CharClass {cons("comp"),definedAs("\"~\" CharClass -> CharClass {cons(\"comp\")}")} %% complement
+		CharClass "/" CharClass		-> CharClass {left,cons("diff"),definedAs("CharClass \"/\" CharClass -> CharClass {left,cons(\"diff\")}")} %% difference
+		CharClass "/\\" CharClass	-> CharClass {left,cons("isect"),definedAs("CharClass \"/\\\\\" CharClass -> CharClass {left,cons(\"isect\")}")} %% intersection
+		CharClass "\\/" CharClass	-> CharClass {left,cons("union"),definedAs("CharClass \"\\\\/\" CharClass -> CharClass {left,cons(\"union\")}")} %% union
+		"(" CharClass ")"			-> CharClass {bracket, avoid,definedAs("\"(\" CharClass \")\" -> CharClass {bracket, avoid}")}
+		
+		CharRange				-> CharRanges {definedAs("CharRange -> CharRanges")}
+		CharRanges CharRanges	-> CharRanges {right,cons("conc"),definedAs("CharRanges CharRanges -> CharRanges {right,cons(\"conc\")}")}
+		"(" CharRanges ")"		-> CharRanges {bracket,definedAs("\"(\" CharRanges \")\" -> CharRanges {bracket}")}
+		
+		Character				-> CharRange {definedAs("Character -> CharRange")}
+		Character "-" Character	-> CharRange {cons("range"),definedAs("Character \"-\" Character -> CharRange {cons(\"range\")}")}
+
+	context-free priorities
+		"~" CharClass             -> CharClass
+		>
+		CharClass "/" CharClass   -> CharClass {left}
+		>
+		CharClass "/\\" CharClass -> CharClass {left}
+		>
+		CharClass "\\/" CharClass -> CharClass {left}

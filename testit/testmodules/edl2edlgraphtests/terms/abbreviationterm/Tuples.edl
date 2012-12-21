@@ -1,0 +1,7 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	context-free syntax
+		rule #$=1;# #$=2;# < #$=3;# #$=4;# T1 #$=5;# #$=6;#, #$=7;# #$=8;# T2 #$=9;# #$=10;# > #$=11;# #$=12;# -> A
+		rule #$=1;# #$=2;# < #$=3;# #$=4;# T1 #$=5;# #$=6;#, #$=7;# #$=8;# T2 #$=9;# #$=10;#, #$=11;# #$=12;# T3 #$=13;# #$=$4;# > #$=15;# #$=16;# -> A

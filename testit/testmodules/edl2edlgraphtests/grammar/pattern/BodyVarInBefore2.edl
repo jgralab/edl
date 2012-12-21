@@ -1,0 +1,11 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+symbol tables
+	aTable<Identifier>
+global actions
+	@Before
+	@Before
+	@Symboltable{aTable}
+	pattern p() -> A #$0=7;#
+	

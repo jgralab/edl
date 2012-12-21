@@ -1,0 +1,24 @@
+module grammar/grammar/Production
+
+imports
+	grammar/terms/Main
+	grammar/grammar/Attribute
+	grammar/basics/JavaIdentifier
+	grammar/semantic-actions/SemanticAction
+
+exports
+	sorts Production Attributes AnnotatedTables
+	
+	context-free syntax
+		"@Symboltable" "{" AnnotatedTables "}" Production	-> Production {cons("symtable-anno-prod"),definedAs("\"@Symboltable\" \"{\" AnnotatedTables \"}\" Production -> Production {cons(\"symtable-anno-prod\")}")}
+		"rule" Terms "->" Term Attributes SemanticAction*		-> Production {cons("prod"),definedAs("\"rule\" Terms \"->\" Term Attributes SemanticAction* -> Production {cons(\"prod\")}")}
+		
+		Terms "->" Term Attributes	-> OldProduction {cons("prod"),definedAs("Terms \"->\" Term Attributes -> OldProduction {cons(\"prod\")}")}
+		
+		{JavaId ","}+ -> AnnotatedTables {cons("annotated-symbol-tables"),definedAs("{JavaId \",\"}+ -> AnnotatedTables {cons(\"annotated-symbol-tables\")}")}
+		
+		"{" {Attribute ","}* "}"	-> Attributes {cons("attrs"),definedAs("\"{\" {Attribute \",\"}* \"}\" -> Attributes {cons(\"attrs\")}")}
+									-> Attributes {cons("no-attrs"),definedAs("-> Attributes {cons(\"no-attrs\")}")}
+		
+		"@Symboltable" -> Keyword {definedAs("\"@Symboltable\" -> Keyword")}
+		"rule" -> Keyword {definedAs("\"rule\" -> Keyword")}

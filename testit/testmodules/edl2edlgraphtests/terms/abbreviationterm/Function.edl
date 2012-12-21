@@ -1,0 +1,9 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	context-free syntax
+		rule ( #$a=1;# => Ta) -> Aa
+		rule ( #$a=1;# T1b #$b=2;# => Tb) -> Ab
+		rule ( T1c T2c => Tc) -> Ac
+		rule ( #$=1;# T1d #$0=2;# T2d #$1=3;# T3d #$2=4;# => Td) -> Ad

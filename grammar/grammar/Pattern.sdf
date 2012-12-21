@@ -1,0 +1,31 @@
+module grammar/grammar/Pattern
+
+imports
+	grammar/terms/Main
+	grammar/grammar/Attribute
+	grammar/grammar/Production
+	grammar/basics/JavaIdentifier
+	grammar/basics/Nat
+	grammar/semantic-actions/SemanticAction
+
+hiddens
+	sorts PatternTerm Multiplicity AnnotatedTables
+
+exports
+	sorts Pattern
+	
+	context-free syntax
+		("@Before"|("@Symboltable" "{" AnnotatedTables "}")) Pattern	-> Pattern {cons("annotated-patter"),definedAs("(\"@Before\"|(\"@Symboltable\" \"{\" AnnotatedTables \"}\")) Pattern -> Pattern {cons(\"annotated-patter\")}")}
+		"pattern" PatternTerm* "->" PatternTerm	SemanticAction+	 		-> Pattern {cons("pattern"),definedAs("\"pattern\" PatternTerm* \"->\" PatternTerm SemanticAction+ -> Pattern {cons(\"pattern\")}")}
+		
+		Term													-> PatternTerm {definedAs("Term -> PatternTerm")}
+		"_"														-> PatternTerm {cons("wildcard"),definedAs("\"_\" -> PatternTerm {cons(\"wildcard\")}")}
+		PatternTerm "(" Multiplicity ")"						-> PatternTerm {cons("single-multiplicity"),definedAs("PatternTerm \"(\" Multiplicity \")\" -> PatternTerm {cons(\"single-multiplicity\")}")}
+		PatternTerm "(" Multiplicity ".." Multiplicity ")"		-> PatternTerm {cons("min-max-multiplicity"),definedAs("PatternTerm \"(\" Multiplicity \"..\" Multiplicity \")\" -> PatternTerm {cons(\"min-max-multiplicity\")}")}
+		
+		NatCon	-> Multiplicity {definedAs("NatCon -> Multiplicity")}
+		"*"		-> Multiplicity {cons("star"),definedAs("\"*\" -> Multiplicity {cons(\"star\")}")}
+		
+		"@Symboltable"	-> Keyword {definedAs("\"@Symboltable\" -> Keyword")}
+		"@Before"		-> Keyword {definedAs("\"@Before\" -> Keyword")}
+		"pattern"		-> Keyword {definedAs("\"pattern\" -> Keyword")}

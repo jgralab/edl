@@ -1,0 +1,6 @@
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+global actions
+	pattern -> A #$x = 3;#
+global actions
+	pattern -> A #$x = 3;#

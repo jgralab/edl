@@ -1,0 +1,11 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+imports Param[]
+imports Param[A->B => C->D]
+imports Param[A->B => C->D C->D => E->F]
+
+module Param
+exports
+	context-free syntax
+		rule A -> B

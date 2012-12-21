@@ -1,0 +1,112 @@
+%%
+%% Grammar for XML 1.1
+%%
+%% The rules of this grammar are extracted of
+%% http://www.w3.org/TR/2006/REC-xml11-20060816/
+%%
+%% 3.1 Start-Tags, End-Tags, and Empty-Element Tags
+module xml/Element
+
+imports xml/Prolog %% Eq
+imports xml/Characters %% Name AttValue
+imports xml/CharacterData %% CharData
+imports xml/Cdata %% CDSect
+imports xml/ProcessingInstructions %% PI
+imports xml/Comment %% Comment
+imports xml/References %% Reference
+
+symbol tables
+	id2Element<Element>
+
+import declarations
+	java.util.List;
+	java.util.Set;
+	java.util.HashSet;
+	de.uni_koblenz.jgralab.utilities.xml2tg.schema.Element;
+	de.uni_koblenz.jgralab.utilities.xml2tg.schema.Node;
+	de.uni_koblenz.jgralab.utilities.xml2tg.schema.Text;
+	
+user code{
+	private Set<String> idAttributes = new HashSet<String>();
+	
+	public void defineIdAttributes(String... idAttrNames) {
+		for (String name: idAttrNames) {
+			idAttributes.add(name);
+		}
+	}
+	
+	private boolean isIdAttribute(String nameOfAttribute){
+		return idAttributes.contains(nameOfAttribute);
+	}
+}
+
+global actions
+	pattern _(1..3) -> Element #$=$0;#
+
+exports
+	sorts Element STag Attribute ETag Content EmptyElemTag
+	
+	context-free syntax
+		%% [39]
+		rule EmptyElemTag -> Element
+		rule STag Content ETag -> Element
+			#{
+				@SuppressWarnings("unchecked")
+				List<Node> listOfNodes = (List<Node>) #$1#;
+				for(Node node: listOfNodes){
+					assert node != null;
+					currentElement.setValueOfTemporaryVariable("node",node);
+					if(node.isInstanceOf(Element.VC)){
+						#HasChild($, $node)#;
+					} else {
+						assert node.isInstanceOf(Text.VC);
+						#HasText($, $node)#;
+					}
+				}
+			}#
+		%% [40]
+		rule
+			#$=Element();#
+			"<" Name #$.name=lexem($1);# 
+			Attribute #{
+				if (isIdAttribute((String) #$0.name#)) {
+					#id2Element.declare($0.value,$);#
+				}
+				#HasAttribute($,$0);#
+			}# *
+			">" -> STag
+		%% [41]
+		rule Name #$.name=lexem($0);# Eq AttValue #$.value=$2;# -> Attribute
+			#{
+				String nameOfAttribute = ((String) #$.name#).toLowerCase();
+				if (nameOfAttribute.equals("idref")||nameOfAttribute.endsWith(":idref")) {
+					#References($,id2Element.use($.name));#
+				} else if (nameOfAttribute.equals("idrefs")||nameOfAttribute.endsWith(":idrefs")) {
+					for (String ref : nameOfAttribute.split("\\s+")) {
+						currentElement.setValueOfTemporaryVariable("ref",ref);
+						#References($,id2Element.use($ref));#
+					}
+				}
+			}#
+		%% [42]
+		rule "</" Name ">" -> ETag
+		%% [43]
+		rule
+			#$=list();#
+			CharData #$.add($0);# ?
+			(
+				(Element | Reference | CDSect | PI| Comment)
+				#$.add($0);#
+				CharData #$.add($0);# ?
+			)* -> Content
+		%% [44]
+		rule
+			#$=Element();#
+			"<" Name #$.name=lexem($1);#
+			Attribute #{
+				if (isIdAttribute((String) #$0.name#)) {
+					#id2Element.declare($0.value,$);#
+				}
+				#HasAttribute($,$0);#
+			}# *
+			"/>" -> EmptyElemTag

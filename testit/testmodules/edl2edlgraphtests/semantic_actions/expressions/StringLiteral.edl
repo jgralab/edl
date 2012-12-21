@@ -1,0 +1,11 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	context-free syntax
+		rule
+			#$a = "ä€asdfasd vae4 r34235*#";
+			 $b = "\b\t\n\f\r\"\'\\";
+			 $d = "\4\34\40\377";
+			 $d = "\ua8F45\u1234 ";
+			# -> A1

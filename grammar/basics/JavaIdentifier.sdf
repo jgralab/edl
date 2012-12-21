@@ -1,0 +1,25 @@
+module grammar/basics/JavaIdentifier
+
+hiddens 
+	sorts InitialJavaId
+
+exports
+	sorts  JavaId TypeName PackageName
+	lexical syntax
+		[A-Za-z\_\$][A-Za-z0-9\_\$]*	-> JavaId {cons("JavaId"),definedAs("[A-Za-z\\_\\$][A-Za-z0-9\\_\\$]* -> JavaId {cons(\"JavaId\")}")}
+		
+		[A-Za-z\_][A-Za-z0-9\_\$]*		-> InitialJavaId {cons("InitialJavaId"),definedAs("[A-Za-z\\_][A-Za-z0-9\\_\\$]* -> InitialJavaId {cons(\"InitialJavaId\")}")}
+	
+	lexical restrictions
+		JavaId -/- [A-Za-z0-9\_\$]
+	
+	context-free syntax
+		InitialJavaId ("." JavaId)* -> PackageName {cons("PackageName"),definedAs("InitialJavaId (\".\" JavaId)* -> PackageName {cons(\"PackageName\")}")}
+
+		InitialJavaId			-> TypeName {cons("TypeName"),definedAs("InitialJavaId -> TypeName {cons(\"TypeName\")}")}
+		PackageName "." JavaId	-> TypeName {cons("TypeName"),definedAs("PackageName \".\" JavaId -> TypeName {cons(\"TypeName\")}")}
+		
+		TypeName 								-> GraphElementClass {definedAs("TypeName -> GraphElementClass")}
+		%% simple GraphElementClass name must start with a capital letter or _ $ to differ from MethodNames @see grammar/semantic-actions/Expressions
+		[a-z][A-Za-z0-9\_\$]*					-> GraphElementClass {reject,definedAs("[a-z][A-Za-z0-9\\_\\$]* -> GraphElementClass {reject}")}
+		PackageName "." [a-z][A-Za-z0-9\_\$]*	-> GraphElementClass {reject,definedAs("PackageName \".\" [a-z][A-Za-z0-9\\_\\$]* -> GraphElementClass {reject}")}

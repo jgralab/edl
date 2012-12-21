@@ -1,0 +1,4 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+imports (Test)

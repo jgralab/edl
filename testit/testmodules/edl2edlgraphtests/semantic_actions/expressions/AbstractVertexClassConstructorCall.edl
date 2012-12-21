@@ -1,0 +1,9 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	context-free syntax
+		rule
+			#
+			 $=Expression();
+			# -> A1

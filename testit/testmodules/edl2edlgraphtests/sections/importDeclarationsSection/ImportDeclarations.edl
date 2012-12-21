@@ -1,0 +1,17 @@
+definition
+
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+imports Test2
+import declarations
+	org.junit.runner.RunWith;
+	org.junit.*;
+import declarations
+	static org.junit.Assert.assertTrue;
+
+module Test2
+import declarations
+	static org.junit.Assert.*;
+import declarations
+	org.junit.runner.RunWith;
+	static org.junit.runner.RunWith;

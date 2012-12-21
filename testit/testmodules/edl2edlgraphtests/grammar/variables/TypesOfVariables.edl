@@ -1,0 +1,10 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	variables
+	variables
+		-> A1
+	lexical variables
+		-> A2 {left}
+		-> A3

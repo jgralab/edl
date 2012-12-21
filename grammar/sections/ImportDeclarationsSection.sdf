@@ -1,0 +1,29 @@
+module grammar/sections/ImportDeclarationsSection
+
+imports
+	grammar/basics/JavaIdentifier
+
+hiddens
+	sorts ImportDeclarationsSection ImportDec
+
+exports
+	sorts InitialSection Keyword
+	
+	context-free syntax
+		ImportDeclarationsSection -> InitialSection {cons("import-decl-section"),definedAs("ImportDeclarationsSection -> InitialSection {cons(\"import-decl-section\")}")}
+	
+		"import" "declarations" ImportDec+ -> ImportDeclarationsSection {cons("import-decl"),definedAs("\"import\" \"declarations\" ImportDec+ -> ImportDeclarationsSection {cons(\"import-decl\")}")}
+		
+		TypeName                  ";"		-> ImportDec {cons("TypeImportDec"),definedAs("TypeName \";\" -> ImportDec {cons(\"TypeImportDec\")}")}
+		PackageName       "." "*" ";"		-> ImportDec {cons("TypeImportOnDemandDec"),definedAs("PackageName \".\" \"*\" \";\" -> ImportDec {cons(\"TypeImportOnDemandDec\")}")}
+		"static" TypeName "." JavaId ";"	-> ImportDec {cons("StaticImportDec"),definedAs("\"static\" TypeName \".\" JavaId \";\" -> ImportDec {cons(\"StaticImportDec\")}")}
+		"static" TypeName "." "*" ";"		-> ImportDec {cons("StaticImportOnDemandDec"),definedAs("\"static\" TypeName \".\" \"*\" \";\" -> ImportDec {cons(\"StaticImportOnDemandDec\")}")}
+		
+		"import"		-> Keyword {definedAs("\"import\" -> Keyword")}
+		"declarations"	-> Keyword {definedAs("\"declarations\" -> Keyword")}
+		"static"		-> Keyword {definedAs("\"static\" -> Keyword")}
+	
+	restrictions
+		"import"		-/- [A-Za-z0-9]
+		"declarations"	-/- [A-Za-z0-9]
+		"static"		-/- [A-Za-z0-9]

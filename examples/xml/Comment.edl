@@ -1,0 +1,18 @@
+%%
+%% Grammar for XML 1.1
+%%
+%% The rules of this grammar are extracted of
+%% http://www.w3.org/TR/2006/REC-xml11-20060816/
+%%
+%% 2.5 Comments
+module xml/Comment
+
+exports
+	sorts Comment Dash
+	
+	lexical syntax
+		%% [15]
+		rule "<!--" ((~[\-]|Dash)* ~[\-])? "-->" -> Comment #$=Text(); $.content=lexem($);#
+		rule [\-] -> Dash
+	lexical restrictions
+		Dash -/- [\-]

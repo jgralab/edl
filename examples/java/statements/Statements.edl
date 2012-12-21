@@ -1,0 +1,126 @@
+%%%
+ %% Section 14.5: Statements
+ %%
+ %% @author Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/statements/Statements
+imports
+  java/statements/LocalVariableDeclarations
+  java/statements/Blocks
+  java/expressions/Main
+global actions
+  pattern _(*) -> Stm #{statements++;}#
+
+exports
+  sorts
+    Stm
+
+  context-free syntax
+    rule Block      -> Stm
+
+  %%%
+   %% Section 14.6: The Empty Statement
+   %%%
+  context-free syntax
+    rule ";"        -> Stm {cons("Empty")}
+
+  %%%
+   %% Section 14.7: Labeled Statements
+   %%%
+  context-free syntax
+    rule Id ":" Stm -> Stm {cons("Labeled")}
+    rule Id ":" LocalVarDecStm -> Stm {cons("Labeled")}
+
+  %%%
+   %% Section 14.8: Expressions Statements
+   %%%
+  context-free syntax
+    rule Expr ";"   -> Stm {cons("ExprStm")}
+
+  %%%
+   %% Section 14.9: The If Statement
+   %%%
+  context-free syntax
+    rule "if" "(" Expr ")" Stm             -> Stm {prefer, cons("If")}
+    rule "if" "(" Expr ")" Stm  "else" Stm -> Stm {cons("If")}
+
+  %%%
+   %% Section 14.10: The Assert Statement
+   %%%
+  context-free syntax
+    rule "assert" Expr          ";" -> Stm  {cons("AssertStm")}
+    rule "assert" Expr ":" Expr ";" -> Stm  {cons("AssertStm")}
+
+
+  %%%
+   %% Section 14.11: The Switch Statement
+   %%%
+  sorts SwitchBlock SwitchGroup SwitchLabel
+  context-free syntax
+    rule "switch" "(" Expr ")" SwitchBlock -> Stm {cons("Switch")}
+    rule "{" SwitchGroup* SwitchLabel* "}" -> SwitchBlock {cons("SwitchBlock")}
+    rule SwitchLabel+ BlockStm+ -> SwitchGroup  {cons("SwitchGroup")}
+
+    rule "case" Expr ":" -> SwitchLabel {cons("Case")}
+    rule "default"   ":" -> SwitchLabel {cons("Default")}
+
+  %%%
+   %% Section 14.12: The While Statement
+   %%%
+  context-free syntax
+    rule "while" "(" Expr ")" Stm -> Stm {cons("While")}
+
+  %%%
+   %% Section 14.13: The Do Statement
+   %%%
+  context-free syntax
+    rule "do" Stm "while" "(" Expr ")" ";" -> Stm {cons("DoWhile")}
+
+
+  %%%
+   %% Section 14.14: The For Statement
+   %%%
+  context-free syntax
+    rule "for" "(" LocalVarDec ";" Expr? ";" {Expr ","}* ")" Stm -> Stm {cons("For")}
+    rule "for" "(" {Expr ","}* ";" Expr? ";" {Expr ","}* ")" Stm -> Stm {cons("For")}
+
+    rule "for" "(" FormalParam ":" Expr ")" Stm -> Stm {cons("ForEach")}
+
+  %%%
+   %% Section 14.15: The Break Statement
+   %%%
+  context-free syntax
+    rule "break"    Id? ";"   -> Stm {cons("Break")}
+
+  %%%
+   %% Section 14.16: The Continue Statement
+   %%%
+  context-free syntax
+    rule "continue" Id? ";"   -> Stm {cons("Continue")}
+
+  %%%
+   %% Section 14.17: The Return Statement
+   %%%
+  context-free syntax
+    rule "return"   Expr? ";" -> Stm {cons("Return")}
+
+  %%%
+   %% Section 14.18: The Throw Statement
+   %%%
+  context-free syntax
+    rule "throw"    Expr  ";" -> Stm {cons("Throw")}
+
+  %%%
+   %% Section 14.19: The Synchronized Statement
+   %%%
+  context-free syntax
+    rule "synchronized" "(" Expr ")" Block -> Stm {cons("Synchronized")}
+
+  %%%
+   %% Section 14.20: The Try Statement
+   %%%
+  sorts CatchClause
+  context-free syntax
+    rule "try" Block CatchClause+ -> Stm {cons("Try")}
+    rule "try" Block CatchClause* "finally" Block -> Stm {cons("Try")}
+    rule "catch" "(" FormalParam ")" Block -> CatchClause {cons("Catch")}

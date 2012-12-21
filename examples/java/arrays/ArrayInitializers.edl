@@ -1,0 +1,14 @@
+%%%
+ %% Section 10.6: Array Initializers
+ %%
+ %% @author Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/arrays/ArrayInitializers
+imports
+  java/classes/FieldDeclarations
+
+exports
+  sorts ArrayInit
+  context-free syntax
+    rule "{" {VarInit ","}*     "}" -> ArrayInit {cons("ArrayInit")}
+    rule "{" {VarInit ","}* "," "}" -> ArrayInit {cons("ArrayInit")}

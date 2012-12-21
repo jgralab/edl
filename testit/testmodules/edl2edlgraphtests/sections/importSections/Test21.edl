@@ -1,0 +1,5 @@
+module Test21
+exports
+	imports (Test11)
+hiddens
+	imports (Test21)

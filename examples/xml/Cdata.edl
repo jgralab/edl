@@ -1,0 +1,25 @@
+%%
+%% Grammar for XML 1.1
+%%
+%% The rules of this grammar are extracted of
+%% http://www.w3.org/TR/2006/REC-xml11-20060816/
+%%
+%% 2.7 CDATA Sections
+module xml/Cdata
+
+exports
+	sorts CDSect CDStart CData Bracket CDEnd
+	
+	lexical syntax
+		%% [18]
+		rule CDStart CData CDEnd -> CDSect #$=Text(); $.content=lexem($);#
+		%% [19]
+		rule "<![CDATA[" -> CDStart
+		%% [20]
+		rule (~[\]] | Bracket)*-> CData
+		rule [\]] -> Bracket
+	lexical restrictions
+		Bracket -/- [\]].[\>]
+	lexical syntax
+		%% [21]
+		rule "]]>" -> CDEnd

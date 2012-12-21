@@ -1,0 +1,23 @@
+%%%
+ %% Section 3.10.4: Character Literals
+ %%
+ %% @author Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/lexical/literals/CharacterLiterals
+imports
+  java/lexical/literals/EscapeSequences
+  java/lexical/UnicodeEscapes
+
+exports
+  sorts
+    CharLiteral
+    CharContent
+    SingleChar
+
+  lexical syntax
+    rule "'" CharContent "'" -> CharLiteral {cons("Char")}
+    rule SingleChar    -> CharContent {cons("Single")}
+    rule UnicodeEscape -> CharContent
+    rule EscapeSeq     -> CharContent
+
+    rule ~[\r\n\'\\] -> SingleChar

@@ -1,0 +1,6 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	context-free syntax
+		rule p(#$0=$1;# T1 #$2=null;#, T2 #$3=$4;#) -> A

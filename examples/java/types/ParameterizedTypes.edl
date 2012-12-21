@@ -1,0 +1,23 @@
+%%%
+ %% Section 4.5: Parameterized Types
+ %%
+ %% @author Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/types/ParameterizedTypes
+imports
+  java/types/ReferenceTypes
+
+exports
+  sorts
+    TypeArgs
+    ActualTypeArg
+    WildcardBound
+    
+  context-free syntax
+    rule "<" {ActualTypeArg ","}+ ">" -> TypeArgs {cons("TypeArgs")}
+
+    rule Type               -> ActualTypeArg
+    rule "?" WildcardBound? -> ActualTypeArg {cons("Wildcard")}
+
+    rule "extends" RefType -> WildcardBound {cons("WildcardUpperBound")}
+    rule "super"   RefType -> WildcardBound {cons("WildcardLowerBound")}

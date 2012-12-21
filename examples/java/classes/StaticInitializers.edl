@@ -1,0 +1,15 @@
+%%%
+ %% Section 8.7: Static Initializers
+ %%
+ %% @author  Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/classes/StaticInitializers
+imports
+  java/statements/Blocks
+
+exports
+  sorts
+    StaticInit
+
+  context-free syntax
+    rule "static" Block -> StaticInit   {cons("StaticInit")}

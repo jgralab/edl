@@ -1,0 +1,26 @@
+module grammar/terms/Label
+
+imports
+	grammar/terms/Main
+	grammar/grammar/Attribute
+	grammar/basics/Identifier
+	grammar/semantic-actions/SemanticAction
+
+hiddens
+	sorts Label
+
+exports
+	sorts Term
+	
+	context-free syntax
+		Label ":" Term -> Term {cons("label"),definedAs("Label \":\" Term -> Term {cons(\"label\")}")}
+		
+		StrCon	-> Label {cons("quoted"),definedAs("StrCon -> Label {cons(\"quoted\")}")}
+		IdCon	-> Label {cons("unquoted"),definedAs("IdCon -> Label {cons(\"unquoted\")}")}
+		
+		Associativity -> Label {reject,definedAs("Associativity -> Label {reject}")}
+	
+	context-free priorities
+		Term SemanticAction* "|" SemanticAction* Term	-> Term {right}
+		>
+		Label ":" Term					-> Term 

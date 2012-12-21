@@ -1,0 +1,10 @@
+module grammar/terms/Lifing
+
+imports
+	grammar/terms/Main
+	grammar/semantic-actions/SemanticAction
+
+exports
+	sorts Term
+	context-free syntax
+		"`" SemanticAction* Term SemanticAction* "`" -> Term {cons("lifting"),definedAs("\"`\" SemanticAction* Term SemanticAction* \"`\" -> Term {cons(\"lifting\")}")}

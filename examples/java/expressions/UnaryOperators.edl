@@ -1,0 +1,21 @@
+%%%
+ %% Section 15.15: Unary Operators
+ %%
+ %% @author  Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/expressions/UnaryOperators
+imports 
+  java/expressions/Main
+exports
+  context-free syntax
+    rule "+" Expr -> Expr {cons("Plus")}
+    rule "-" Expr -> Expr {cons("Minus")}
+
+    rule "++" Expr -> Expr {cons("PreIncr")}
+    rule "--" Expr -> Expr {cons("PreDecr")}
+
+    rule "~" Expr -> Expr {cons("Complement")}
+    rule "!" Expr -> Expr {cons("Not")}
+
+    rule "(" PrimType ")" Expr -> Expr {cons("CastPrim")}
+    rule "(" RefType  ")" Expr -> Expr {cons("CastRef")}

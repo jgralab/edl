@@ -1,0 +1,20 @@
+module grammar/sections/SchemaSection
+
+imports
+	grammar/basics/JavaIdentifier
+
+hiddens
+	sorts SchemaSection
+
+exports
+	sorts InitialSection Keyword
+	
+	context-free syntax
+		SchemaSection -> InitialSection {cons("schema-section"),definedAs("SchemaSection -> InitialSection {cons(\"schema-section\")}")}
+	
+		"schema" TypeName  -> SchemaSection {cons("schema"),definedAs("\"schema\" TypeName  -> SchemaSection {cons(\"schema\")}")}
+		
+		"schema"	-> Keyword {definedAs("\"schema\" -> Keyword")}
+	
+	restrictions
+		"schema"	-/- [A-Za-z0-9]

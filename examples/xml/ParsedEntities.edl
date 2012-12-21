@@ -1,0 +1,30 @@
+%%
+%% Grammar for XML 1.1
+%%
+%% The rules of this grammar are extracted of
+%% http://www.w3.org/TR/2006/REC-xml11-20060816/
+%%
+%% 4.3 Parsed Entities
+module xml/ParsedEntities
+
+imports xml/Prolog %% VersionInfo Eq
+imports xml/Element %% Content
+imports xml/Characters %% Char RestrictedChar
+
+exports
+	sorts TextDecl ExtParsedEnt EncodingDecl EncName
+	
+	context-free syntax
+		%% [77]
+		rule "<?xml" VersionInfo? EncodingDecl "?>" -> TextDecl
+		%% [78]
+		rule TextDecl Content -> ExtParsedEnt
+		rule Char* RestictedChar Char* -> ExtParsedEnt {reject}
+		%% [80]
+		rule "encoding" Eq [\"] EncName [\"] -> EncodingDecl
+		rule "encoding" Eq [\'] EncName [\'] -> EncodingDecl
+	lexical syntax
+		%% [81]
+		rule [A-Za-z] [A-Za-z0-9\.\_\-]* -> EncName
+	lexical restrictions
+		EncName -/- [A-Za-z0-9\.\_\-]

@@ -1,0 +1,21 @@
+%%
+%% Grammar for XML 1.1
+%%
+%% The rules of this grammar are extracted of
+%% http://www.w3.org/TR/2006/REC-xml11-20060816/
+%%
+%% 2.1 Well-Formed XML Documents
+module xml/Document
+
+imports xml/Characters %% Char RestrictedChar
+imports xml/Prolog %% Prolog Misc
+imports xml/Element %% Element
+
+exports
+	sorts Document
+	
+	context-free syntax
+	
+		%% [1]
+		rule Prolog Element Misc* -> Document
+		rule Char* RestrictedChar Char* -> Document {reject}

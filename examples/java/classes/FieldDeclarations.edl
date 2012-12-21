@@ -1,0 +1,61 @@
+%%%
+ %% Section 8.3: Field Declarations
+ %%
+ %% @author  Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/classes/FieldDeclarations
+imports
+  java/lexical/Identifiers
+  java/lexical/Modifiers
+  java/types/Main
+  java/interfaces/Annotations
+  java/arrays/ArrayInitializers
+  java/expressions/Main
+global actions
+	pattern Id _(0..1) -> VarDecId #$ = lexem($0);#
+	pattern VarDecId _(0..2) -> VarDec #$ = $0;#
+
+exports
+  sorts
+    FieldDec
+    VarDec
+    VarDecId
+    Dim
+    VarInit
+
+  context-free syntax
+    rule
+	  (Anno | FieldMod)*
+	  Type
+	  {
+        VarDec
+	    #$mem = JavaMember();
+	     $mem.simpleName = $0;
+	     name2Member.declare($mem, $mem);
+	    #
+	    ","
+	  }+
+	  ";"
+	  -> FieldDec {cons("FieldDec")}
+
+    rule VarDecId             -> VarDec {cons("VarDec")}
+    rule VarDecId "=" VarInit -> VarDec {cons("VarDec")}
+
+    rule Id      -> VarDecId
+    rule Id Dim+ -> VarDecId {cons("ArrayVarDecId")}
+
+    rule "[" "]" -> Dim {cons("Dim")}
+
+    rule Expr      -> VarInit
+    rule ArrayInit -> VarInit
+
+  sorts FieldMod
+  context-free syntax
+    rule Public    -> FieldMod
+    rule Protected -> FieldMod
+    rule Private   -> FieldMod
+
+    rule Static    -> FieldMod
+    rule Final     -> FieldMod
+    rule Transient -> FieldMod
+    rule Volatile  -> FieldMod

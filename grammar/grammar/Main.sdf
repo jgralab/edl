@@ -1,0 +1,13 @@
+module grammar/grammar/Main
+
+imports
+	grammar/grammar/Grammar
+	grammar/grammar/Aliases
+	grammar/grammar/Sorts
+	grammar/grammar/StartSymbols
+	grammar/grammar/Syntax
+	grammar/grammar/Variables
+	grammar/grammar/Priorities
+	grammar/grammar/Restrictions
+	grammar/grammar/Production
+	grammar/sections/ImportsSection

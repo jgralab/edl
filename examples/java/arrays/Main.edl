@@ -1,0 +1,8 @@
+%%%
+ %% Chapter 10: Arrays
+ %%
+ %% @author Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/arrays/Main
+imports
+  java/arrays/ArrayInitializers

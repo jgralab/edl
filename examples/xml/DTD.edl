@@ -1,0 +1,29 @@
+%%
+%% Grammar for XML 1.1
+%%
+%% The rules of this grammar are extracted of
+%% http://www.w3.org/TR/2006/REC-xml11-20060816/
+%%
+%% 2.8 Prolog and Document Type Declaration
+module xml/DTD
+
+imports xml/ProcessingInstructions %% PI
+imports xml/Comment %% Comment
+imports xml/Characters %% Elementdecl
+imports xml/AttributeListDeclarations %% AttlistDecl
+imports xml/EntityDeclarations %% EntityDecl
+imports xml/NotationDeclarations %% NotationDecl
+
+exports
+	sorts  DoctypeDecl Markupdecl
+	
+	context-free syntax
+		%% [28]
+		rule "<!DOCTYPE" Name ExternalID? ("[" (Markupdecl | PEReference)* "]")? ">" -> DoctypeDecl
+		%% [29]
+		rule Elementdecl -> Markupdecl
+		rule AttlistDecl -> Markupdecl
+		rule EntityDecl -> Markupdecl
+		rule NotationDecl -> Markupdecl
+		rule PI -> Markupdecl
+		rule Comment -> Markupdecl

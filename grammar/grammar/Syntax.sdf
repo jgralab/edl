@@ -1,0 +1,18 @@
+module grammar/grammar/Syntax
+
+imports
+	grammar/grammar/Production
+	grammar/terms/PrefixFunction
+
+exports
+	sorts Grammar
+	
+	context-free syntax
+					   "syntax" Production* -> Grammar {cons("syntax"),definedAs("\"syntax\" Production* -> Grammar {cons(\"syntax\")}")}
+		"lexical"      "syntax" Production* -> Grammar {cons("lexical-syntax"),definedAs("\"lexical\" \"syntax\" Production* -> Grammar {cons(\"lexical-syntax\")}")}
+		"context-free" "syntax" Production* -> Grammar {cons("context-free-syntax"),definedAs("\"context-free\" \"syntax\" Production* -> Grammar {cons(\"context-free-syntax\")}")}
+		
+		"syntax"	-> Keyword {definedAs("\"syntax\" -> Keyword")}
+
+	restrictions
+		"syntax" -/- [A-Za-z0-9]

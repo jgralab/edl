@@ -1,0 +1,7 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	context-free syntax
+		rule #$a=true;$b=false;# -> A1
+		rule #$a=true;$b=false;# -> A2

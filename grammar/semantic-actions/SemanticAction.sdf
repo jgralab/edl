@@ -1,0 +1,14 @@
+module grammar/semantic-actions/SemanticAction
+
+imports
+	grammar/semantic-actions/Statements
+	grammar/semantic-actions/Expressions
+
+exports
+	sorts SemanticAction ExpressionSemanticAction
+	
+	context-free syntax
+		"#" "#"				-> SemanticAction {cons("empty sem-act"),definedAs("\"#\" \"#\" -> SemanticAction {cons(\"empty sem-act\")}")}
+		"#" Statement+ "#"	-> SemanticAction {cons("sem-act"),definedAs("\"#\" Statement+ \"#\" -> SemanticAction {cons(\"sem-act\")}")}
+		
+		"#" Expression "#"	-> ExpressionSemanticAction {cons("expression sem-act"),definedAs("\"#\" Expression \"#\" -> ExpressionSemanticAction {cons(\"expression sem-act\")}")}

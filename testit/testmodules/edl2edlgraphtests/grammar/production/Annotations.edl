@@ -1,0 +1,22 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+symbol tables
+	first<Identifier>
+	second<Identifier>
+imports Test2
+exports
+	lexical syntax
+		@Symboltable{second}
+		@Symboltable{first}
+		@Symboltable{second,first,first}
+		rule -> A #$=null;#
+
+module Test2
+imports Test
+symbol tables
+	second<Identifier>
+exports
+	lexical syntax
+		@Symboltable{first,second}
+		rule -> A #$=null;#

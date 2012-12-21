@@ -1,0 +1,30 @@
+module grammar/terms/Literal
+
+hiddens
+	sorts SingleQuotedStrChar SingleQuotedStrCon
+
+exports
+	sorts Term
+	
+	lexical syntax
+		"\\n"					-> SingleQuotedStrChar {cons("newline"),definedAs("\"\\\\n\" -> SingleQuotedStrChar {cons(\"newline\")}")}
+		"\\t"					-> SingleQuotedStrChar {cons("tab"),definedAs("\"\\\\t\" -> SingleQuotedStrChar {cons(\"tab\")}")}
+		"\\'"					-> SingleQuotedStrChar {cons("quote"),definedAs("\"\\\\'\" -> SingleQuotedStrChar {cons(\"quote\")}")}
+		"\\\\"					-> SingleQuotedStrChar {cons("backslash"),definedAs("\"\\\\\\\\\" -> SingleQuotedStrChar {cons(\"backslash\")}")}
+		"\\" [0-9][0-9][0-9]	-> SingleQuotedStrChar {cons("decimal"),definedAs("\"\\\\\" [0-9][0-9][0-9] -> SingleQuotedStrChar {cons(\"decimal\")}")}
+		~[\0-\31\n\t\'\\]		-> SingleQuotedStrChar {cons("normal"),definedAs("~[\\0-\\31\\n\\t\\'\\\\] -> SingleQuotedStrChar {cons(\"normal\")}")}
+		
+		[\'] SingleQuotedStrChar* [\']	-> SingleQuotedStrCon {cons("default"),definedAs("[\\'] SingleQuotedStrChar* [\\'] -> SingleQuotedStrCon {cons(\"default\")}")}
+		
+		"\\n"					-> StrChar {cons("newline"),definedAs("\"\\\\n\" -> StrChar {cons(\"newline\")}")}
+		"\\t"					-> StrChar {cons("tab"),definedAs("\"\\\\t\" -> StrChar {cons(\"tab\")}")}
+		"\\\""					-> StrChar {cons("quote"),definedAs("\"\\\\\\\"\" -> StrChar {cons(\"quote\")}")}
+		"\\\\"					-> StrChar {cons("backslash"),definedAs("\"\\\\\\\\\" -> StrChar {cons(\"backslash\")}")}
+		"\\" [0-9][0-9][0-9]	-> StrChar {cons("decimal"),definedAs("\"\\\\\" [0-9][0-9][0-9] -> StrChar {cons(\"decimal\")}")}
+		~[\0-\31\n\t\"\\]		-> StrChar {cons("normal"),definedAs("~[\\0-\\31\\n\\t\\\"\\\\] -> StrChar {cons(\"normal\")}")}
+
+		[\"] StrChar* [\"]   -> StrCon  {cons("default"),definedAs("[\\\"] StrChar* [\\\"]   -> StrCon  {cons(\"default\")}")}
+	
+	context-free syntax
+		StrCon				-> Term {cons("lit"),definedAs("StrCon -> Term {cons(\"lit\")}")}
+		SingleQuotedStrCon	-> Term {cons("ci-lit"),definedAs("SingleQuotedStrCon -> Term {cons(\"ci-lit\")}")}

@@ -1,0 +1,40 @@
+%%%
+ %% Section 8.8: Constructor Declarations
+ %%
+ %% @author  Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/classes/ConstructorDeclarations
+imports
+  java/lexical/Identifiers
+  java/lexical/Modifiers
+  java/interfaces/Annotations
+  java/statements/Main
+  java/expressions/Main
+
+exports
+  sorts
+    ConstrDec
+    ConstrBody
+    ConstrHead
+    ConstrInv
+
+  context-free syntax
+    rule ConstrHead ConstrBody ->  ConstrDec {cons("ConstrDec")}
+    rule (Anno | ConstrMod)* TypeParams? Id "(" {FormalParam ","}* ")" Throws? -> ConstrHead {cons("ConstrDecHead")}
+      #$ = JavaMember();
+	   $.simpleName = lexem($2);
+	   name2Member.declare($, $);
+	  #
+
+
+    rule "{" ConstrInv? BlockStm* "}" -> ConstrBody {cons("ConstrBody")}
+
+    rule          TypeArgs? "this"  "(" {Expr ","}* ")" ";" -> ConstrInv {cons("AltConstrInv")}
+    rule          TypeArgs? "super" "(" {Expr ","}* ")" ";" -> ConstrInv {cons("SuperConstrInv")}
+    rule Expr "." TypeArgs? "super" "(" {Expr ","}* ")" ";" -> ConstrInv {cons("QSuperConstrInv")}
+
+  sorts ConstrMod
+  context-free syntax  
+    rule Public    -> ConstrMod
+    rule Protected -> ConstrMod
+    rule Private   -> ConstrMod

@@ -1,0 +1,14 @@
+%%%
+ %% Section 15.14: Postfix Expressions
+ %%
+ %% @author  Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/expressions/Postfix
+imports 
+  java/expressions/Main
+
+exports
+  context-free syntax
+    rule ExprName  -> Expr
+    rule Expr "++" -> Expr {cons("PostIncr")}
+    rule Expr "--" -> Expr {cons("PostDecr")}

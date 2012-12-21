@@ -1,0 +1,13 @@
+module grammar/sections/Main
+
+imports
+	grammar/sections/ExportsSection
+	grammar/sections/HiddensSection
+	grammar/sections/ImportsSection
+	grammar/sections/IslandSection
+	grammar/sections/ImportDeclarationsSection
+	grammar/sections/UserCodeSection
+	grammar/sections/SymbolTablesSection
+	grammar/sections/DefaultValuesSection
+	grammar/sections/GlobalActionsSection
+	grammar/sections/SchemaSection

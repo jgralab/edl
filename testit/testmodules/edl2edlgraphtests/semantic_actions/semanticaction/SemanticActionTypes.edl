@@ -1,0 +1,10 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	context-free syntax
+		rule ## -> A
+		rule #$=0;$a=1;# ## #$=3;# -> B
+		rule #{#4##3#}# -> C
+		rule #{#{return 4;}#}# -> D
+		rule #{return 4;}# -> E

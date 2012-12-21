@@ -1,0 +1,75 @@
+%%
+%% Grammar for XML 1.1
+%%
+%% The rules of this grammar are extracted of
+%% http://www.w3.org/TR/2006/REC-xml11-20060816/
+%%
+%% 2.2 Characters
+module xml/Characters
+
+imports xml/References %% Reference PEReference
+
+exports
+	sorts PubIdCharD PubidCharS PubidLiteral SystemLiteral AttValue EntityValue Nmtokens Nmtoken Names Name NameChar NameStartChar S RestrictedChar Char
+	
+	lexical syntax
+		
+		%% [2]
+		rule [\0-\255] -> Char
+		%% [2a]
+		rule [\1-\8\11-\12\14-\31\127-\132\134-\159] -> RestrictedChar
+		
+	%% Whitespace
+		
+		%% [3]
+		rule [\ \t\r\n]+ -> S
+		rule S -> LAYOUT
+	lexical restrictions
+		S -/- [\ \t\r\n]
+	context-free restrictions
+		LAYOUT? -/- [\ \t\n\r]
+	
+	lexical syntax
+	%% Names and Tokens
+	
+		%% [4]
+		rule ":" | [A-Z] | "_" | [a-z] | [\255] -> NameStartChar
+		%% [4a]
+		rule NameStartChar | "-" | "." | [0-9] | [\254] -> NameChar
+		%% [5]
+		rule NameStartChar NameChar* -> Name
+	lexical restrictions
+		Name -/- [\:A-Z\_a-z\255\-\.0-9\254]
+	
+	context-free syntax
+		%% [6]
+		rule Name+ -> Names
+	
+	lexical syntax
+		%% [7]
+		rule NameChar+ -> Nmtoken
+	lexical restrictions
+		Nmtoken -/- [\:A-Z\_a-z\255\-\.0-9\254]
+	
+	context-free syntax
+		%% [8]
+		rule Nmtoken+ -> Nmtokens
+	
+	lexical syntax
+	%% Literals
+	
+		%% [9]
+		rule  [\"] (~[\%\&\"] | PEReference | Reference)* [\"] -> EntityValue
+		rule  [\'] (~[\%\&\'] | PEReference | Reference)* [\'] -> EntityValue
+		%% [10]
+		rule  [\"] (~[\<\&\"] | Reference)* [\"] -> AttValue #$=lexem($1);#
+		rule  [\'] (~[\<\&\'] | Reference)* [\'] -> AttValue #$=lexem($1);#
+		%% [11]
+		rule  [\"] ~[\"]* [\"] -> SystemLiteral
+		rule  [\'] ~[\']* [\'] -> SystemLiteral
+		%% [12]
+		rule  [\"] PubidCharD* [\"] -> PubidLiteral
+		rule  [\'] PubidCharS* [\'] -> PubidLiteral
+		%% [13]
+		rule [\ ] | [\r] | [\n] | [a-zA-Z0-9] | [\-\(\)\+\,\.\/\:\=\?\;\!\*\#\@\$\_\%] -> PubidCharS
+		rule PubidCharS | [\'] -> PubIdCharD

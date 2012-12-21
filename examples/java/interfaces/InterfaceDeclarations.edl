@@ -1,0 +1,62 @@
+%%%
+ %% Section 9.1: Interface Declarations
+ %%
+ %% @author Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/interfaces/InterfaceDeclarations
+imports
+  java/lexical/Identifiers
+  java/lexical/Modifiers
+  java/names/Main
+  java/types/Main
+  java/classes/ClassDeclarations
+  java/classes/MethodDeclarations
+  java/interfaces/ConstantDeclarations
+  java/interfaces/AbstractMethodDeclarations
+  java/interfaces/AnnotationTypes
+  java/interfaces/Annotations
+
+exports
+  sorts
+    InterfaceDec
+    InterfaceDecHead
+    ExtendsInterfaces
+    InterfaceMemberDec
+    InterfaceMod
+
+  context-free syntax
+    rule AnnoDec -> InterfaceDec #$ = $0;#
+
+	@Symboltable{name2Member}
+    rule
+	  #$ = JavaType();
+	   $.kind = TypeKind.INTERFACE;
+	   name2Member.namespace = $;
+	  #
+	  InterfaceDecHead
+	  #$.simpleName = $0;
+	   $packagePrefix = {return packagePrefix;};
+	   {packagePrefix += (packagePrefix.isEmpty()? "" : ".") + #$.simpleName#;}
+	   $.qualifiedName = {return packagePrefix;};
+	   name2NamedElement.declare($.qualifiedName, $);
+	  #
+	  "{" InterfaceMemberDec* "}" -> InterfaceDec {cons("InterfaceDec")}
+	  #{packagePrefix = #$packagePrefix#.toString();}#
+
+    rule (Anno | InterfaceMod)* "interface" Id TypeParams? ExtendsInterfaces? -> InterfaceDecHead {cons("InterfaceDecHead")} #$=lexem($2);#
+    rule "extends" {InterfaceType ","}+ -> ExtendsInterfaces {cons("ExtendsInterfaces")}
+
+  context-free syntax
+    rule ConstantDec       -> InterfaceMemberDec
+    rule AbstractMethodDec -> InterfaceMemberDec
+    rule ClassDec          -> InterfaceMemberDec #name2Member.declare($0, $0);#
+    rule InterfaceDec      -> InterfaceMemberDec #name2Member.declare($0, $0);#
+    rule ";"               -> InterfaceMemberDec {cons("Semicolon")}
+
+  context-free syntax
+    rule Public         -> InterfaceMod
+    rule Protected      -> InterfaceMod
+    rule Private        -> InterfaceMod
+    rule Abstract       -> InterfaceMod
+    rule Static         -> InterfaceMod
+    rule StrictFP       -> InterfaceMod

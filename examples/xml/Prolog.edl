@@ -1,0 +1,37 @@
+%%
+%% Grammar for XML 1.1
+%%
+%% The rules of this grammar are extracted of
+%% http://www.w3.org/TR/2006/REC-xml11-20060816/
+%%
+%% 2.8 Prolog and Document Type Declaration
+module xml/Prolog
+
+imports xml/Comment %% Comment
+imports xml/ProcessingInstructions %% PI
+imports xml/DTD %% Doctypedecl
+imports xml/Standalone %% SDDecl
+imports xml/ParsedEntities %% EncodingDecl
+
+exports
+	sorts Prolog XMLDecl VersionInfo Eq VersionNum Misc
+	
+	context-free syntax
+		%% [22]
+		rule XMLDecl Misc* (Doctypedecl Misc*)? -> Prolog
+		%% [23]
+		rule "<?xml" VersionInfo EncodingDecl? SDDecl? "?>" -> XMLDecl
+		%% [24]
+		rule "version" Eq [\"] VersionNum [\"] -> VersionInfo
+		rule "version" Eq [\'] VersionNum [\'] -> VersionInfo
+		%% [25]
+		rule [\=] -> Eq
+	lexical syntax
+		%% [26]
+		rule [0-9]+ "." [0-9]* -> VersionNum
+	lexical restrictions
+		VersionNum -/- [0-9]
+	context-free syntax
+		%% [27]
+		rule Comment -> Misc
+		rule PI -> Misc

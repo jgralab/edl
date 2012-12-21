@@ -1,0 +1,8 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	start-symbols
+	start-symbols A
+	lexical start-symbols B C
+	context-free start-symbols D E F

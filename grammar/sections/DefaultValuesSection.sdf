@@ -1,0 +1,24 @@
+module grammar/sections/DefaultValuesSection
+
+imports
+	grammar/semantic-actions/Expressions
+
+hiddens
+	sorts DefaultValuesSection DefaultStatement
+
+exports
+	sorts InitialSection Keyword
+	
+	context-free syntax
+		DefaultValuesSection -> InitialSection {cons("default-values-section"),definedAs("DefaultValuesSection -> InitialSection {cons(\"default-values-section\")}")}
+	
+		"default" "values" DefaultStatement+ -> DefaultValuesSection {cons("default-values"),definedAs("\"default\" \"values\" DefaultStatement+ -> DefaultValuesSection {cons(\"default-values\")}")}
+		
+		GraphElementClass "." JavaId "=" Expression ";" -> DefaultStatement {cons("default-statement"),definedAs("GraphElementClass \".\" JavaId \"=\" Expression \";\" -> DefaultStatement {cons(\"default-statement\")}")}
+		
+		"default"	-> Keyword {definedAs("\"default\" -> Keyword")}
+		"values"	-> Keyword {definedAs("\"values\" -> Keyword")}
+	
+	restrictions
+		"default"	-/- [A-Za-z0-9]
+		"values"	-/- [A-Za-z0-9]

@@ -1,0 +1,7 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	start-symbols A ## B #$=$0;# C
+	lexical start-symbols D ## E #$=$0;# F
+	context-free start-symbols G ## H #$=$0;$=$0;# I

@@ -1,0 +1,18 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+imports Test2
+island start
+	inclusive 1
+island end
+	exclusive exclusive |2
+island start
+	exclusive 3
+	inclusive 4
+island end
+	inclusive 5
+	exclusive 6\s*
+
+module Test2
+island start
+	exclusive to be ignored

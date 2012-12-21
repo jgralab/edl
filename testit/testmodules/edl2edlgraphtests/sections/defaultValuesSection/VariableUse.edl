@@ -1,0 +1,11 @@
+definition
+
+module Test
+imports Test2
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+default values
+	Identifier.name = "";
+	
+module Test2
+default values
+	common.EDLEdge.length = $a;

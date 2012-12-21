@@ -1,0 +1,29 @@
+module grammar/terms/Term
+
+imports
+	grammar/terms/Main
+	grammar/semantic-actions/SemanticAction
+
+exports
+	sorts Term Terms
+	
+	context-free syntax
+		SemanticAction* (Term SemanticAction*)+	-> Terms {cons("terms"),definedAs("SemanticAction* (Term SemanticAction*)+ -> Terms {cons(\"terms\")}")}
+		SemanticAction*							-> Terms {cons("empty-terms"),definedAs("SemanticAction* -> Terms {cons(\"empty-terms\")}")}
+	
+		"(" SemanticAction* Term SemanticAction* ")"								-> Term {bracket,definedAs("\"(\" SemanticAction* Term SemanticAction* \")\" -> Term {bracket}")}
+		"(" SemanticAction*  ")"													-> Term {cons("empty"),definedAs("\"(\" SemanticAction*  \")\" -> Term {cons(\"empty\")}")}
+		"(" SemanticAction* Term SemanticAction* (Term SemanticAction*)+ ")"		-> Term {cons("seq"),definedAs("\"(\" SemanticAction* Term SemanticAction* (Term SemanticAction*)+ \")\" -> Term {cons(\"seq\")}")}
+		Term SemanticAction* "?"													-> Term {cons("opt"),definedAs("Term SemanticAction* \"?\" -> Term {cons(\"opt\")}")}
+		Term SemanticAction* "+"													-> Term {cons("iter"),definedAs("Term SemanticAction* \"+\" -> Term {cons(\"iter\")}")}
+		Term SemanticAction* "*"													-> Term {cons("iter-star"),definedAs("Term SemanticAction* \"*\" -> Term {cons(\"iter-star\")}")}
+		"{" (SemanticAction* Term SemanticAction*) (Term SemanticAction*) "}" "+"	-> Term {cons("iter-sep"),definedAs("\"{\" (SemanticAction* Term SemanticAction*) (Term SemanticAction*) \"}\" \"+\" -> Term {cons(\"iter-sep\")}")}
+		"{" (SemanticAction* Term SemanticAction*) (Term SemanticAction*) "}" "*"	-> Term {cons("iter-star-sep"),definedAs("\"{\" (SemanticAction* Term SemanticAction*) (Term SemanticAction*) \"}\" \"*\" -> Term {cons(\"iter-star-sep\")}")}
+		Term SemanticAction* "|" SemanticAction* Term								-> Term {right,cons("alt"),definedAs("Term SemanticAction* \"|\" SemanticAction* Term -> Term {right,cons(\"alt\")}")}
+	
+	context-free priorities
+		{Term SemanticAction* "?"							-> Term
+		 Term SemanticAction* "*"							-> Term
+		 Term SemanticAction* "+"							-> Term}
+		>
+		Term SemanticAction* "|" SemanticAction* Term	-> Term {right}

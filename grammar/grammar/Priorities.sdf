@@ -1,0 +1,35 @@
+module grammar/grammar/Priorities
+
+imports
+	grammar/grammar/Production
+	grammar/terms/PrefixFunction
+	grammar/basics/Nat
+
+hiddens
+	sorts Priorities Priority Group ArgumentIndicator
+
+exports
+	sorts Grammar
+	
+	context-free syntax
+					   "priorities" Priorities	-> Grammar {cons("priorities"),definedAs("\"priorities\" Priorities -> Grammar {cons(\"priorities\")}")}
+		"lexical"      "priorities" Priorities	-> Grammar {cons("lexical-priorities"),definedAs("\"lexical\" \"priorities\" Priorities -> Grammar {cons(\"lexical-priorities\")}")}
+		"context-free" "priorities" Priorities	-> Grammar {cons("context-free-priorities"),definedAs("\"context-free\" \"priorities\" Priorities -> Grammar {cons(\"context-free-priorities\")}")}
+		
+		{Priority ","}* -> Priorities {definedAs("{Priority \",\"}* -> Priorities")}
+		
+		{Group ">"}+				-> Priority {cons("chain"),definedAs("{Group \">\"}+ -> Priority {cons(\"chain\")}")}
+		Group Associativity Group	-> Priority {cons("assoc"),definedAs("Group Associativity Group -> Priority {cons(\"assoc\")}")}
+		
+		OldProduction								-> Group {cons("simple-group"),definedAs("OldProduction -> Group {cons(\"simple-group\")}")}
+		"{" OldProduction* "}"						-> Group {cons("prods-group"),definedAs("\"{\" OldProduction* \"}\" -> Group {cons(\"prods-group\")}")}
+		"{" Associativity ":" OldProduction* "}"	-> Group {cons("assoc-group"),definedAs("\"{\" Associativity \":\" OldProduction* \"}\" -> Group {cons(\"assoc-group\")}")}
+		Group "."									-> Group {non-assoc,cons("non-transitive"),definedAs("Group \".\" -> Group {non-assoc,cons(\"non-transitive\")}")} %% non-transitive .>
+		Group ArgumentIndicator						-> Group {non-assoc,cons("with-arguments"),definedAs("Group ArgumentIndicator -> Group {non-assoc,cons(\"with-arguments\")}")}
+		
+		"<" {NatCon ","}+ ">" -> ArgumentIndicator {cons("default"),definedAs("\"<\" {NatCon \",\"}+ \">\" -> ArgumentIndicator {cons(\"default\")}")}
+		
+		"priorities"	-> Keyword {definedAs("\"priorities\" -> Keyword")}
+
+	restrictions
+		"priorities" -/- [A-Za-z0-9]

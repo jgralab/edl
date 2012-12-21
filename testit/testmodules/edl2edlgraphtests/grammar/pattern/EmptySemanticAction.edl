@@ -1,0 +1,8 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+global actions
+	pattern -> A #$=5;#
+	pattern _(*) -> A #;#
+	pattern -> A #$=3;#
+	

@@ -1,0 +1,43 @@
+%%%
+ %% Section 7.5: Import Declarations
+ %%
+ %% @author  Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/packages/ImportDeclarations
+imports
+  java/lexical/Identifiers
+  java/names/Main
+import declarations
+	de.uni_koblenz.jgralab.TemporaryVertex;
+global actions
+  pattern "import" _(1) _(0..2) ";" -> ImportDec
+    #$import = lexem($1).replaceAll("\\s+", "");#
+  pattern "import" "static" TypeName "." _ ";" -> ImportDec
+    #$import = lexem($2).replaceAll("\\s+", "");#
+  pattern "import" "static"(0..1) TypeName _(0..2) ";" -> ImportDec
+    #$ = name2NamedElement.useOrDeclare($import);
+     {
+       if (((Vertex) #$#).isTemporary()) {
+	     #$.qualifiedName = $import;
+	      $.kind = TypeKind.UNKNOWN;
+	     #
+	   }
+     }
+    #
+
+exports
+  sorts
+    ImportDec
+
+  context-free syntax
+    rule "import" TypeName                  ";"  -> ImportDec {cons("TypeImportDec")}
+    rule "import" PackageName       "." "*" ";"  -> ImportDec {cons("TypeImportOnDemandDec")}
+      #$ = name2Package.useOrDeclare($import);
+       {
+         if (((Vertex) #$#).isTemporary()) {
+           #$.qualifiedName = $import;#
+         }
+       }
+      #
+    rule "import" "static" TypeName "." Id  ";"  -> ImportDec {cons("StaticImportDec")}
+    rule "import" "static" TypeName "." "*" ";"  -> ImportDec {cons("StaticImportOnDemandDec")}

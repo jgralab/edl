@@ -1,0 +1,10 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	lexical priorities
+		->C {right} left ->D
+	lexical priorities
+		->A1 right ->A2,
+		p()->A3 non-assoc ->A4,
+		->A5 > ->A6

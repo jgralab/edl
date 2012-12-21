@@ -1,0 +1,15 @@
+module grammar/sections/HiddensSection
+
+imports
+	grammar/grammar/Main
+
+exports
+	sorts Section
+	
+	context-free syntax
+		"hiddens" Grammar -> Section {cons("hiddens"),definedAs("\"hiddens\" Grammar -> Section {cons(\"hiddens\")}")}
+		
+		"hiddens"	-> Keyword {definedAs("\"hiddens\" -> Keyword")}
+
+	restrictions
+		"hiddens" -/- [A-Za-z0-9]

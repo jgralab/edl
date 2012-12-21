@@ -1,0 +1,33 @@
+%%%
+ %% Section 9.7: Annotations
+ %%
+ %% @author  Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/interfaces/Annotations
+imports
+  java/lexical/Identifiers
+  java/names/Main
+  java/expressions/Main
+
+exports
+  sorts
+    Anno
+    ElemVal
+    ElemValPair
+
+  context-free syntax
+    rule "@" TypeName "(" {ElemValPair ","}* ")" -> Anno {cons("Anno")}
+    rule "@" TypeName "(" ElemVal ")"            -> Anno {cons("SingleElemAnno")}
+    rule "@" TypeName                            -> Anno {cons("MarkerAnno")}
+
+  context-free syntax  
+    rule Id "=" ElemVal -> ElemValPair {cons("ElemValPair")}
+
+    rule Expr -> ElemVal
+    rule Anno -> ElemVal
+
+    rule "{" {ElemVal ","}*     "}" -> ElemVal {cons("ElemValArrayInit")}
+    rule "{" {ElemVal ","}* "," "}" -> ElemVal {cons("ElemValArrayInit")}
+
+    %% Assignments are not allowed as element values.
+    rule LHS "=" Expr -> ElemVal {reject}

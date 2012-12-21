@@ -1,0 +1,18 @@
+module testit/testmodules/ruletests/Literals
+
+exports
+	sorts A
+	
+	context-free start-symbols A
+	
+	context-free syntax
+		"abc"	-> A {definedAs("\"abc\"\\t-> A")}
+		'abc'	-> A {definedAs("'abc'\\t-> A")}
+		[abc]	-> A {definedAs("[abc]\\t-> A")}
+		[a-z]	-> A {definedAs("[a-z]\\t-> A")}
+		[a-z0-9]	-> A {definedAs("[a-z0-9]\\t-> A")}
+		~[(a-z)]	-> A {definedAs("~[(a-z)]\\t-> A")}
+		[a-z]/[h-j]	-> A {definedAs("[a-z]/[h-j]\\t-> A")}
+		[a-z]/\[h-j]	-> A {definedAs("[a-z]/\\[h-j]\\t-> A")}
+		[a-z]\/[0-9]	-> A {definedAs("[a-z]\\/[0-9]\\t-> A")}
+		([a-z])	-> A {definedAs("([a-z])\\t-> A")}

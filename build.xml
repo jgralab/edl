@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="edl" basedir="." default="build">
+
+	<property name="projectname" value="edl" />
+	<property name="main" value="" />
+
+	<property name="rsa2tg.n" value="true" />
+	<property name="unjarexcludes" value="strategoxt.jar" />
+
+	<import file="../common/common.xml" />
+	
+	<property name="schema.file" value="${project.dir}/src/de/uni_koblenz/edl/preprocessor/edlschema.tg" />
+	<property name="xmi.schema.file" value="${project.dir}/de.uni_koblenz.edl.schema.EDLSchema.xmi" />
+
+</project>

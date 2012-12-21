@@ -1,0 +1,19 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	context-free syntax
+		rule
+			#Identifier();
+			 $={return 4;};
+			 $=Identifier();
+			 $=common.Identifier();
+			 $=IsNameOfModule($,common.Module());
+			 $=$.alpha;
+			 $.alpha=4;
+			 $=$.omega;
+			 $.omega=4;
+			 $.direction=KleeneOperator.PLUS;
+			 $.direction=KleeneOperator.PLUS;
+			 $=list()[0];
+			# -> A1

@@ -1,0 +1,37 @@
+module grammar/sections/SymbolTablesSection
+
+imports
+	grammar/basics/JavaIdentifier
+	grammar/Main
+
+hiddens
+	sorts SymbolTablesSection STableDef STableName STableElems PersistentSTableElems PersistentSTableElem
+
+exports
+	sorts InitialSection Keyword
+	
+	context-free syntax
+		SymbolTablesSection -> InitialSection {cons("symbol-tables-section"),definedAs("SymbolTablesSection -> InitialSection {cons(\"symbol-tables-section\")}")}
+	
+		"symbol" "tables" STableDef+ -> SymbolTablesSection {cons("symbol-tables"),definedAs("\"symbol\" \"tables\" STableDef+ -> SymbolTablesSection {cons(\"symbol-tables\")}")}
+		
+		STableName "<" STableElems 			 ">"						-> STableDef {cons("symbol-tables"),definedAs("STableName \"<\" STableElems \">\" -> STableDef {cons(\"symbol-tables\")}")}
+		STableName "<" PersistentSTableElems ">" ":" GraphElementClass	-> STableDef {cons("symbol-tables"),definedAs("STableName \"<\" PersistentSTableElems \">\" \":\" GraphElementClass -> STableDef {cons(\"symbol-tables\")}")}
+		
+		JavaId					-> STableName {cons("symbol-table-name"),definedAs("JavaId -> STableName {cons(\"symbol-table-name\")}")}
+		"$" [0-9a-zA-Z\$\_]*	-> STableName {reject,definedAs("\"$\" [0-9a-zA-Z\\$\\_]* -> STableName {reject}")}
+		Keyword 				-> STableName {reject,definedAs("Keyword -> STableName {reject}")}
+		
+		{GraphElementClass ","}+ -> STableElems {cons("table-elements"),definedAs("{GraphElementClass \",\"}+ -> STableElems {cons(\"table-elements\")}")}
+		
+		{PersistentSTableElem ","}+ -> PersistentSTableElems {cons("pers-table-elements"),definedAs("{PersistentSTableElem \",\"}+ -> PersistentSTableElems {cons(\"pers-table-elements\")}")}
+		
+		GraphElementClass "-->" GraphElementClass	-> PersistentSTableElem {cons("pers-element-OUT"),definedAs("GraphElementClass \"-->\" GraphElementClass -> PersistentSTableElem {cons(\"pers-element-OUT\")}")}
+		GraphElementClass "<--" GraphElementClass	-> PersistentSTableElem {cons("pers-element-IN"),definedAs("GraphElementClass \"<--\" GraphElementClass -> PersistentSTableElem {cons(\"pers-element-IN\")}")}
+		
+		"symbol"	-> Keyword {definedAs("\"symbol\" -> Keyword")}
+		"tables"	-> Keyword {definedAs("\"tables\" -> Keyword")}
+	
+	restrictions
+		"symbol"	-/- [A-Za-z0-9]
+		"tables"	-/- [A-Za-z0-9]

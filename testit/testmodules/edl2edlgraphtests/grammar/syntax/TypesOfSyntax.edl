@@ -1,0 +1,11 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	syntax
+	syntax
+		rule -> A1
+	lexical syntax
+		rule -> A2
+	context-free syntax
+		rule -> A3

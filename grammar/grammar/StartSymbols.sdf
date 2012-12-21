@@ -1,0 +1,20 @@
+module grammar/grammar/StartSymbols
+
+imports
+	grammar/terms/Main
+	grammar/semantic-actions/SemanticAction
+
+exports
+	sorts Grammar
+	
+	context-free syntax
+		               "start-symbols" StartDef*	-> Grammar {cons("kernel-start-symbols"),definedAs("\"start-symbols\" StartDef* -> Grammar {cons(\"kernel-start-symbols\")}")}
+		"lexical"      "start-symbols" StartDef*	-> Grammar {cons("lexical-start-symbols"),definedAs("\"lexical\" \"start-symbols\" StartDef* -> Grammar {cons(\"lexical-start-symbols\")}")}
+		"context-free" "start-symbols" StartDef*	-> Grammar {cons("context-free-start-symbols"),definedAs("\"context-free\" \"start-symbols\" StartDef* -> Grammar {cons(\"context-free-start-symbols\")}")}
+		
+		Term SemanticAction?	-> StartDef {definedAs("Term SemanticAction? -> StartDef")}
+		
+		"start-symbols"	-> Keyword {definedAs("\"start-symbols\" -> Keyword")}
+
+	restrictions
+		"start-symbols" -/- [A-Za-z0-9]

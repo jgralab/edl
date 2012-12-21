@@ -1,0 +1,6 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+global actions
+	pattern p(A,B) -> A #$6=7;#
+	

@@ -1,0 +1,18 @@
+%%%
+ %% Section 14.4: Local Variable Declaration Statements
+ %%
+ %% @author Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/statements/LocalVariableDeclarations
+imports
+  java/classes/MethodDeclarations
+  java/classes/FieldDeclarations
+
+exports
+  sorts
+    LocalVarDecStm
+    LocalVarDec
+
+  context-free syntax
+    rule LocalVarDec ";" -> LocalVarDecStm {prefer, cons("LocalVarDecStm")} #{statements++;}#
+    rule (Anno | VarMod)* Type {VarDec ","}+ -> LocalVarDec {prefer, cons("LocalVarDec")}

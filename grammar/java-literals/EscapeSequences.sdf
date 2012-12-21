@@ -1,0 +1,29 @@
+%%%
+ %% Section 3.10.6: Escape Sequences for Character and String Literals
+ %%
+ %% @author Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module grammar/java-literals/EscapeSequences
+imports
+
+exports
+  sorts
+    EscapeSeq
+    NamedEscape
+    OctaEscape
+    LastOcta
+
+  lexical syntax
+    OctaEscape  -> EscapeSeq {definedAs("OctaEscape -> EscapeSeq")}
+    NamedEscape -> EscapeSeq {definedAs("NamedEscape -> EscapeSeq")}
+
+    "\\" [btnfr\"\'\\]        -> NamedEscape {cons("NamedEscape"),definedAs("\"\\\\\" [btnfr\\\"\\'\\\\] -> NamedEscape {cons(\"NamedEscape\")}")}
+    "\\" LastOcta             -> OctaEscape  {cons("OctaEscape1"),definedAs("\"\\\\\" LastOcta -> OctaEscape {cons(\"OctaEscape1\")}")}
+    "\\" [0-3] LastOcta       -> OctaEscape  {cons("OctaEscape2"),definedAs("\"\\\\\" [0-3] LastOcta -> OctaEscape {cons(\"OctaEscape2\")}")}
+    "\\" [4-7] LastOcta       -> OctaEscape  {cons("OctaEscape2"),definedAs("\"\\\\\" [4-7] LastOcta -> OctaEscape {cons(\"OctaEscape2\")}")}
+    "\\" [0-3] [0-7] LastOcta -> OctaEscape  {cons("OctaEscape3"),definedAs("\"\\\\\" [0-3] [0-7] LastOcta -> OctaEscape {cons(\"OctaEscape3\")}")}
+
+    [0-7] -> LastOcta {definedAs("[0-7] -> LastOcta")}
+
+  lexical restrictions
+    LastOcta -/- [0-7]

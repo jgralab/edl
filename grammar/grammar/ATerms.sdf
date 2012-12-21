@@ -1,0 +1,30 @@
+module grammar/grammar/ATerms
+
+imports
+	grammar/terms/Literal
+	grammar/basics/Nat
+	grammar/basics/Identifier
+
+hiddens
+	sorts AFun IntCon RealCon
+
+exports
+	sorts ATerm
+	
+	context-free syntax
+		IntCon						-> ATerm {cons("int"),definedAs("IntCon -> ATerm {cons(\"int\")}")} %% integer
+		RealCon						-> ATerm {cons("real"),definedAs("RealCon -> ATerm {cons(\"real\")}")} %% real
+		AFun						-> ATerm {cons("fun"),definedAs("AFun -> ATerm {cons(\"fun\")}")} %% function
+		AFun "(" {ATerm ","}+ ")"	-> ATerm {cons("appl"),definedAs("AFun \"(\" {ATerm \",\"}+ \")\" -> ATerm {cons(\"appl\")}")} %% function application
+		"<" ATerm ">"				-> ATerm {cons("placeholder"),definedAs("\"<\" ATerm \">\" -> ATerm {cons(\"placeholder\")}")} %% placeholder
+		"[" {ATerm ","}*	"]"		-> ATerm {cons("list"),definedAs("\"[\" {ATerm \",\"}* \"]\" -> ATerm {cons(\"list\")}")} %% list
+		ATerm "{" {ATerm ","}+ "}"	-> ATerm {cons("annotated"),definedAs("ATerm \"{\" {ATerm \",\"}+ \"}\" -> ATerm {cons(\"annotated\")}")} %% annotated ATerm
+		
+		StrCon	-> AFun {cons("quoted"),definedAs("StrCon -> AFun {cons(\"quoted\")}")}
+		IdCon	-> AFun {cons("unquoted"),definedAs("IdCon -> AFun {cons(\"unquoted\")}")}
+		
+		NatCon		-> IntCon {cons("natural"),definedAs("NatCon -> IntCon {cons(\"natural\")}")}
+		"+" NatCon	-> IntCon {cons("positive"),definedAs("\"+\" NatCon -> IntCon {cons(\"positive\")}")}
+		"-" NatCon	-> IntCon {cons("negative"),definedAs("\"-\" NatCon -> IntCon {cons(\"negative\")}")}
+		
+		IntCon "." NatCon ("e" IntCon)?	-> RealCon {cons("real-con"),definedAs("IntCon \".\" NatCon (\"e\" IntCon)? -> RealCon {cons(\"real-con\")}")}

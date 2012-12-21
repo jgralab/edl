@@ -1,0 +1,5 @@
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+default values
+	EDLEdge.length = 6;
+	EDLEdge.offset = 3;

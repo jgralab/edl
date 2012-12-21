@@ -1,0 +1,95 @@
+%%%
+ %% Section 8.1: Class Declarations
+ %%
+ %% @author  Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/classes/ClassDeclarations
+imports
+  java/lexical/Identifiers
+  java/lexical/Modifiers
+  java/types/ReferenceTypes
+  java/types/TypeVariables
+  java/classes/FieldDeclarations
+  java/classes/MethodDeclarations
+  java/classes/InstanceInitializers
+  java/classes/StaticInitializers
+  java/classes/ConstructorDeclarations
+  java/classes/EnumDeclarations
+  java/interfaces/InterfaceDeclarations
+user code{
+	private boolean isAbstract = false;
+}
+
+exports
+  sorts
+    ClassDec
+    ClassBody
+    ClassDecHead
+
+  context-free syntax
+    rule EnumDec -> ClassDec #$=$0;#
+
+	@Symboltable{name2Member}
+    rule
+	  #$ = JavaType();
+	   $.kind = TypeKind.CLASS;
+	   name2Member.namespace = $;
+	  #
+	  ClassDecHead
+	  #$.simpleName = $0;
+	   $packagePrefix = {return packagePrefix;};
+	   {packagePrefix += (packagePrefix.isEmpty()? "" : ".") + #$.simpleName#;}
+	   $.qualifiedName = {return packagePrefix;};
+	   $.abstract = {return isAbstract;};
+	   name2NamedElement.declare($.qualifiedName, $);
+	  #
+	  ClassBody -> ClassDec {cons("ClassDec")}
+	  #{packagePrefix = #$packagePrefix#.toString();
+	    isAbstract = false;
+	  }#
+	
+	
+    rule "{" ClassBodyDec* "}" -> ClassBody {cons("ClassBody")}
+
+    rule (Anno | ClassMod)* "class" Id  TypeParams? Super? Interfaces? -> ClassDecHead {cons("ClassDecHead")} #$=lexem($2);#
+
+  %% 8.1.1: Class Modifiers
+  sorts ClassMod
+  context-free syntax
+    rule Abstract  -> ClassMod #{isAbstract = true;}#
+    rule Public    -> ClassMod
+    rule Protected -> ClassMod
+    rule Private   -> ClassMod
+    rule Static    -> ClassMod
+    rule Final     -> ClassMod
+    rule StrictFP  -> ClassMod
+
+  %% 8.1.4: Superclasses and Subclasses
+  sorts Super
+  context-free syntax
+
+    rule "extends" ClassType -> Super {cons("SuperDec")}
+
+  %% 8.1.5: Superinterfaces
+  sorts Interfaces
+  context-free syntax
+    rule "implements" {InterfaceType ","}+ -> Interfaces {cons("ImplementsDec")}
+
+
+  %% 8.1.6: Class Body and Member Declarations
+  sorts
+    ClassBodyDec
+    ClassMemberDec
+
+  context-free syntax
+    rule ClassMemberDec -> ClassBodyDec
+    rule InstanceInit   -> ClassBodyDec
+    rule StaticInit     -> ClassBodyDec
+    rule ConstrDec      -> ClassBodyDec
+
+  context-free syntax
+    rule FieldDec     -> ClassMemberDec
+    rule MethodDec    -> ClassMemberDec
+    rule ClassDec     -> ClassMemberDec #name2Member.declare($0, $0);#
+    rule InterfaceDec -> ClassMemberDec #name2Member.declare($0, $0);#
+    rule ";"          -> ClassMemberDec {cons("Semicolon")}

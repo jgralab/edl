@@ -1,0 +1,26 @@
+module grammar/sections/ImportsSection
+
+imports
+	grammar/Module
+	grammar/grammar/Renaming
+
+hiddens
+	sorts ImportsSection Import
+
+exports
+	sorts InitialSection Grammar
+	
+	context-free syntax
+		ImportsSection	-> InitialSection {cons("imp-section"),definedAs("ImportsSection -> InitialSection {cons(\"imp-section\")}")}
+		ImportsSection	-> Grammar {cons("imp-section"),definedAs("ImportsSection -> Grammar {cons(\"imp-section\")}")}
+		
+		"imports" Import* -> ImportsSection {cons("imports"),definedAs("\"imports\" Import* -> ImportsSection {cons(\"imports\")}")}
+		
+		ModuleName				-> Import {prefer,cons("module"),definedAs("ModuleName -> Import {prefer,cons(\"module\")}")}
+		ModuleName Renamings	-> Import {cons("renamed-module"),definedAs("ModuleName Renamings -> Import {cons(\"renamed-module\")}")}
+		"(" ModuleName ")"		-> Import {bracket,definedAs("\"(\" ModuleName \")\" -> Import {bracket}")}
+		
+		"imports"	-> Keyword {definedAs("\"imports\" -> Keyword")}
+
+	restrictions
+		"imports" -/- [A-Za-z0-9]

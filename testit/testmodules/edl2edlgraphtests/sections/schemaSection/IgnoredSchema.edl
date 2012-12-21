@@ -1,0 +1,8 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema2
+imports Test2
+
+module Test2
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema3

@@ -1,0 +1,35 @@
+module grammar/sections/IslandSection
+
+hiddens
+	sorts IslandEntry  IslandSection
+
+exports
+	sorts InitialSection
+	
+	lexical syntax
+		"exclusive" JavaRegExp -> IslandEntry {cons("exclusive"),definedAs("\"exclusive\" JavaRegExp -> IslandEntry {cons(\"exclusive\")}")}
+		"inclusive" JavaRegExp -> IslandEntry {cons("inclusive"),definedAs("\"inclusive\" JavaRegExp -> IslandEntry {cons(\"inclusive\")}")}
+		
+		~[\n\EOF]+ -> JavaRegExp {cons("java-reg-exp"),definedAs("~[\\n\\EOF]+ -> JavaRegExp {cons(\"java-reg-exp\")}")}
+	
+	lexical restrictions
+		JavaRegExp -/- ~[\n\EOF]
+	
+	context-free syntax
+		IslandSection -> InitialSection {cons("island-section"),definedAs("IslandSection -> InitialSection {cons(\"island-section\")}")}
+	
+		"island" "start" IslandEntry+ -> IslandSection {cons("island-start"),definedAs("\"island\" \"start\" IslandEntry+ -> IslandSection {cons(\"island-start\")}")}
+		"island" "end"   IslandEntry+ -> IslandSection {cons("island-end"),definedAs("\"island\" \"end\" IslandEntry+ -> IslandSection {cons(\"island-end\")}")}
+		
+		"island"		-> Keyword {definedAs("\"island\" -> Keyword")}
+		"start"			-> Keyword {definedAs("\"start\" -> Keyword")}
+		"end"			-> Keyword {definedAs("\"end\" -> Keyword")}
+		"exclusive"		-> Keyword {definedAs("\"exclusive\" -> Keyword")}
+		"inclusive"		-> Keyword {definedAs("\"inclusive\" -> Keyword")}
+	
+	restrictions
+		"island"	-/- [A-Za-z0-9]
+		"start"		-/- [A-Za-z0-9]
+		"end"		-/- [A-Za-z0-9]
+		"exclusive"	-/- [A-Za-z0-9]
+		"inclusive"	-/- [A-Za-z0-9]

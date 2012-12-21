@@ -1,0 +1,9 @@
+module grammar/basics/Comments
+
+exports
+	lexical syntax
+		"%%" ~[\n\EOF]* [\n\EOF]	-> Whitespace {cons("line"),definedAs("\"%%\" ~[\\n\\EOF]* [\\n\\EOF] -> Whitespace {cons(\"line\")}")}
+		"%" ~[\%\n]+ "%"			-> Whitespace {cons("nested"),definedAs("\"%\" ~[\\%\\n]+ \"%\" -> Whitespace {cons(\"nested\")}")}
+	
+	context-free restrictions
+		LAYOUT? -/- [\%]

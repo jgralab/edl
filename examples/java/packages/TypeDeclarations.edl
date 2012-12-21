@@ -1,0 +1,18 @@
+%%%
+ %% Section 7.6: Top Level Type Declarations
+ %%
+ %% @author  Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/packages/TypeDeclarations
+imports
+  java/classes/ClassDeclarations
+  java/interfaces/InterfaceDeclarations
+
+exports
+  sorts
+    TypeDec
+
+  context-free syntax
+    rule ClassDec      -> TypeDec #$ = $0;#
+    rule InterfaceDec  -> TypeDec #$ = $0;#
+    rule ";"           -> TypeDec {cons("Semicolon")} #$ = list();#

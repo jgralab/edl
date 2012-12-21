@@ -1,0 +1,23 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	context-free syntax
+		rule []				-> A1
+		rule [a]			-> A2
+		rule [\255]			-> A3
+		rule [\\]			-> A4
+		rule [\TOP]			-> A5
+		
+		rule [abc]			-> A6
+		rule [a-z]			-> A7
+		rule [ab-z0-9]		-> A8
+		rule [ab-z0-9A-Z]	-> A9
+		rule [ab-z(0-9A-Z)]	-> A10
+		
+		rule ([a])			-> A11
+		rule ~[a]			-> A12
+		rule [a]/[b]		-> A13
+		rule [a]/\[b]		-> A14
+		rule [a]\/[b]		-> A15
+		rule [a]/(~[b])		-> A16

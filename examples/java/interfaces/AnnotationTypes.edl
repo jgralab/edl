@@ -1,0 +1,54 @@
+%%%
+ %% Section 9.6: Annotation Types
+ %%  
+ %% @author  Martin Bravenboer <martin.bravenboer@gmail.com
+ %%%
+module java/interfaces/AnnotationTypes
+imports
+  java/lexical/Identifiers
+  java/classes/ClassDeclarations
+  java/classes/EnumDeclarations
+  java/interfaces/InterfaceDeclarations
+  java/interfaces/AbstractMethodDeclarations
+  java/interfaces/ConstantDeclarations
+  java/interfaces/Annotations
+
+exports
+  sorts
+    AnnoDec
+    AnnoDecHead
+
+  context-free syntax
+    @Symboltable{name2Member}
+    rule
+	  #$ = JavaType();
+	   $.kind = TypeKind.ANNOTATION;
+	   name2Member.namespace = $;
+	  #
+	  AnnoDecHead
+	  #$.simpleName = $0;
+	   $packagePrefix = {return packagePrefix;};
+	   {packagePrefix += (packagePrefix.isEmpty()? "" : ".") + #$.simpleName#;}
+	   $.qualifiedName = {return packagePrefix;};
+	   name2NamedElement.declare($.qualifiedName, $);
+	  #
+	  "{" AnnoElemDec* "}" -> AnnoDec {cons("AnnoDec")}
+	  #{packagePrefix = #$packagePrefix#.toString();}#
+	
+    rule (Anno | InterfaceMod)* "@" "interface" Id -> AnnoDecHead {cons("AnnoDecHead")} #$ = lexem($3);#
+
+  sorts
+    AnnoElemDec
+    DefaultVal
+
+  context-free syntax
+    rule AbstractMethodMod* Type Id "(" ")" DefaultVal? ";" -> AnnoElemDec {cons("AnnoMethodDec")}
+
+    rule ConstantDec  -> AnnoElemDec
+    rule ClassDec     -> AnnoElemDec #name2Member.declare($0, $0);#
+    rule InterfaceDec -> AnnoElemDec #name2Member.declare($0, $0);#
+    rule EnumDec      -> AnnoElemDec #name2Member.declare($0, $0);#
+    rule AnnoDec      -> AnnoElemDec #name2Member.declare($0, $0);#
+    rule ";"          -> AnnoElemDec {cons("Semicolon")}
+
+    rule "default" ElemVal -> DefaultVal {cons("DefaultVal")}

@@ -1,0 +1,29 @@
+%%%
+ %% Section 15.26: Assignment Operators
+ %%
+ %% @author  Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/expressions/AssignmentOperators
+imports
+  java/expressions/Main
+
+exports
+  sorts LHS
+  context-free syntax
+    rule LHS "="    Expr -> Expr {cons("Assign")}
+    rule LHS "*="   Expr -> Expr {cons("AssignMul")}
+    rule LHS "/="   Expr -> Expr {cons("AssignDiv")}
+    rule LHS "%="   Expr -> Expr {cons("AssignRemain")}
+    rule LHS "+="   Expr -> Expr {cons("AssignPlus")}
+    rule LHS "-="   Expr -> Expr {cons("AssignMinus")}
+    rule LHS "<<="  Expr -> Expr {cons("AssignLeftShift")}
+    rule LHS ">>="  Expr -> Expr {cons("AssignRightShift")}
+    rule LHS ">>>=" Expr -> Expr {cons("AssignURightShift")}
+    rule LHS "&="   Expr -> Expr {cons("AssignAnd")}
+    rule LHS "^="   Expr -> Expr {cons("AssignExcOr")}
+    rule LHS "|="   Expr -> Expr {cons("AssignOr")}
+
+    rule ExprName    -> LHS
+    rule FieldAccess -> LHS
+    rule ArrayAccess -> LHS
+	rule "(" LHS ")" -> LHS {bracket} %% javac accepts this

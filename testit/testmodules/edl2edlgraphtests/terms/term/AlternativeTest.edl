@@ -1,0 +1,8 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	context-free syntax
+		rule A1 | A2 -> A
+		rule B1 #$0=1;# | #$a=1;# B2 -> B
+		rule C1 C2 #$0=1;# | #$a=1;# C3 #$1=$0;# C4 -> C

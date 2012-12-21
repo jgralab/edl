@@ -1,0 +1,13 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+global actions
+	pattern _ -> A #$=5;#
+	pattern _ -> _(1) #$=5;#
+	pattern A | B -> _(1..1) #$=5;#
+	pattern A | B(*) -> _ #$=5;#
+	pattern _(4..*) B(5) A(3..3) -> _ #$=5;#
+	pattern prefix(C,D,E) -> _ #$=1;#
+	pattern label:X(10) -> _ #$=5;#
+	pattern prefix() -> _(1) #$=1;#
+	pattern prefix() -> _(1..1) #$=1;#

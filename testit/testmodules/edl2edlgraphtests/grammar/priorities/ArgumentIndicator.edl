@@ -1,0 +1,6 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	lexical priorities
+		->A <1>> {} <2>.> {->B} <3,4>> ->C <5,10,8>> {right:->F ->G}

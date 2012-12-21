@@ -1,0 +1,11 @@
+definition
+
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+imports Test2
+
+module Test2
+exports
+imports Test
+hiddens
+imports Test2

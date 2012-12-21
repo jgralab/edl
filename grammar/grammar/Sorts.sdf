@@ -1,0 +1,15 @@
+module grammar/grammar/Sorts
+
+imports
+	grammar/terms/Main
+
+exports
+	sorts Grammar
+	
+	context-free syntax
+		"sorts" Term* -> Grammar {cons("sorts"),definedAs("\"sorts\" Term* -> Grammar {cons(\"sorts\")}")}
+		
+		"sorts"	-> Keyword {definedAs("\"sorts\" -> Keyword")}
+
+	restrictions
+		"sorts" -/- [A-Za-z0-9]

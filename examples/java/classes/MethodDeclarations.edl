@@ -1,0 +1,78 @@
+%%%
+ %% Section 8.4: Method Declarations
+ %%
+ %% @author  Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/classes/MethodDeclarations
+imports
+  java/lexical/Identifiers
+  java/lexical/Modifiers
+  java/types/Main
+  java/classes/FieldDeclarations
+  java/interfaces/Annotations
+  java/statements/Blocks
+  
+global actions
+  pattern _(8..9) -> MethodDecHead
+    #$ = JavaMember();
+	 $.simpleName = lexem($3);
+	 name2Member.declare($, $);
+	#
+
+exports
+  sorts
+    MethodDec
+    MethodDecHead
+    ResultType
+
+  context-free syntax
+    rule MethodDecHead MethodBody -> MethodDec {cons("MethodDec")}
+
+    rule (Anno | MethodMod)* TypeParams? ResultType Id "(" {FormalParam ","}* ")" Throws?      -> MethodDecHead {cons("MethodDecHead")}
+    rule (Anno | MethodMod)* TypeParams? ResultType Id "(" {FormalParam ","}* ")" Dim+ Throws? -> MethodDecHead {cons("DeprMethodDecHead")}
+
+    rule Type   -> ResultType
+    rule "void" -> ResultType {cons("Void")}
+
+  sorts FormalParam
+  context-free syntax
+    rule (Anno | VarMod)* Type       VarDecId -> FormalParam {cons("Param")}
+    rule (Anno | VarMod)* Type "..." VarDecId -> FormalParam {cons("VarArityParam")}
+
+  sorts VarMod
+  context-free syntax
+    rule Final -> VarMod
+
+  sorts MethodMod
+  context-free syntax
+    rule Public         -> MethodMod
+    rule Protected      -> MethodMod
+    rule Private        -> MethodMod
+
+    rule Abstract       -> MethodMod
+    rule Static         -> MethodMod
+    rule Final          -> MethodMod
+    rule Synchronized   -> MethodMod
+    rule Native         -> MethodMod
+    rule StrictFP       -> MethodMod
+
+  %%%
+   %% Section 8.4.6: Method Throws
+   %%%
+  sorts
+    Throws
+    ExceptionType
+
+  context-free syntax
+    rule "throws" {ExceptionType ","}+ -> Throws {cons("ThrowsDec")}
+    rule ClassType -> ExceptionType
+    %% TypeVar -> ExceptionType
+
+  %%%
+   %% Section 8.4.7: Method Body
+   %%% 
+  sorts MethodBody
+  context-free syntax
+    rule Block -> MethodBody
+    rule ";"   -> MethodBody {cons("NoMethodBody")}
+

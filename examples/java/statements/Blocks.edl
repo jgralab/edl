@@ -1,0 +1,22 @@
+%%%
+ %% Section 14.2: Blocks
+ %%
+ %% @author Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/statements/Blocks
+imports
+  java/classes/ClassDeclarations
+  java/statements/LocalVariableDeclarations
+  java/statements/Statements
+
+exports
+  sorts
+    BlockStm
+    Block
+
+  context-free syntax
+    rule "{" BlockStm* "}" -> Block {cons("Block")}
+
+    rule LocalVarDecStm  -> BlockStm 
+    rule ClassDec        -> BlockStm {cons("ClassDecStm")}
+    rule Stm             -> BlockStm

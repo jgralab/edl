@@ -1,0 +1,21 @@
+%%
+%% Grammar for XML 1.1
+%%
+%% The rules of this grammar are extracted of
+%% http://www.w3.org/TR/2006/REC-xml11-20060816/
+%%
+%% 4.7 Notation Declarations
+module xml/NotationDeclarations
+
+imports xml/Characters %% PubidLiteral Name
+imports xml/EntityDeclarations %% ExternalID
+
+exports
+	sorts NotationDecl PublicID
+	
+	context-free syntax
+		%% [82]
+		rule "<!NOTATION" Name ExternalID ">" -> NotationDecl
+		rule "<!NOTATION" Name PublicID ">" -> NotationDecl
+		%% [83]
+		rule "PUBLIC" PubidLiteral -> PublicID

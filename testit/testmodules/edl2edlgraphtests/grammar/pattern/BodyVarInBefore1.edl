@@ -1,0 +1,7 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+global actions
+	@Before
+	pattern _(*) -> A #$0=7;#
+	

@@ -1,0 +1,12 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+imports Param[]
+imports Param[X => Boolean]
+imports Param[X => Boolean Y => Integer]
+imports Param[X => Param[[Y,Integer]]]
+
+module Param
+exports
+	context-free syntax
+		rule X Y -> Param[[X,Y]]

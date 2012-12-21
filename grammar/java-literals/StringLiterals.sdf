@@ -1,0 +1,28 @@
+%%%
+ %% Section 3.10.5: String Literals
+ %%
+ %% @author Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module grammar/java-literals/StringLiterals
+imports
+  grammar/java-literals/EscapeSequences
+  grammar/java-literals/UnicodeEscapes
+
+exports
+  sorts
+    StringLiteral
+    StringPart
+    StringChars
+    FooStringChars
+
+  lexical syntax
+    "\"" StringPart* "\"" -> StringLiteral {cons("String"),definedAs("\"\\\"\" StringPart* \"\\\"\" -> StringLiteral {cons(\"String\")}")}
+    StringChars    -> StringPart {cons("Chars"),definedAs("StringChars -> StringPart {cons(\"Chars\")}")}
+    UnicodeEscape  -> StringPart {definedAs("UnicodeEscape -> StringPart")}
+    EscapeSeq      -> StringPart {definedAs("EscapeSeq -> StringPart")}
+
+    FooStringChars -> StringChars {definedAs("FooStringChars -> StringChars")}
+    ~[\"\\\n\13]+  -> FooStringChars {definedAs("~[\\\"\\\\\\n\\13]+  -> FooStringChars")}
+
+  lexical restrictions
+    StringChars -/- ~[\"\\\n\13]

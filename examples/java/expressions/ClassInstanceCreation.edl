@@ -1,0 +1,16 @@
+%%%
+ %% Section 15.9: Class Instance Creation Expressions
+ %%
+ %% @author  Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/expressions/ClassInstanceCreation
+imports
+  java/expressions/Main
+  java/classes/ClassDeclarations
+
+exports
+  context-free syntax
+
+    rule          "new" TypeArgs? ClassOrInterfaceType "(" {Expr ","}* ")" ClassBody? -> Expr {cons("NewInstance")}
+    rule Expr "." "new" TypeArgs? Id         TypeArgs? "(" {Expr ","}* ")" ClassBody? -> Expr {cons("QNewInstance")}
+

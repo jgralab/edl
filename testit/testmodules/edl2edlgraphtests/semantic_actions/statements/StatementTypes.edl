@@ -1,0 +1,7 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	context-free syntax
+		rule #;# -> A
+		rule #;;$a=4;{return 4;};{System.out.println();}# -> B

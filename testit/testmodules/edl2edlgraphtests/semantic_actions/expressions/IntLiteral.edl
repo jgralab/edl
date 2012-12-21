@@ -1,0 +1,6 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	context-free syntax
+		rule #$z=0;$a=3;$b=+4;$b=-5;$c=0x10;$d=010;# -> A

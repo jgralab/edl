@@ -1,0 +1,22 @@
+module grammar/sections/GlobalActionsSection
+
+imports
+	grammar/grammar/Pattern
+
+hiddens
+	sorts GlobalActionsSection
+
+exports
+	sorts InitialSection Keyword
+	
+	context-free syntax
+		GlobalActionsSection -> InitialSection {cons("global-actions-section"),definedAs("GlobalActionsSection -> InitialSection {cons(\"global-actions-section\")}")}
+	
+		"global" "actions" Pattern+ -> GlobalActionsSection {cons("global-actions"),definedAs("\"global\" \"actions\" Pattern+ -> GlobalActionsSection {cons(\"global-actions\")}")}
+		
+		"global"	-> Keyword {definedAs("\"global\" -> Keyword")}
+		"actions"	-> Keyword {definedAs("\"actions\" -> Keyword")}
+	
+	restrictions
+		"global"	-/- [A-Za-z0-9]
+		"actions"	-/- [A-Za-z0-9]

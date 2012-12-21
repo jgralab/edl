@@ -1,0 +1,21 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+symbol tables
+	aTable<Identifier>
+global actions
+	@Before
+	pattern _(*) -> A #$=3;#
+	@Symboltable{aTable}
+	pattern _(5)-> A #$1=aTable.use($);#
+	@Before
+	@Symboltable{aTable}
+	pattern -> B #$a=4;#
+	@Symboltable{aTable,aTable}
+	pattern _(5)-> A #$1=aTable.use($);#
+	@Before
+	@Symboltable{aTable}
+	@Symboltable{aTable}
+	@Before
+	pattern _(5)-> A #$=aTable.use($);#
+	

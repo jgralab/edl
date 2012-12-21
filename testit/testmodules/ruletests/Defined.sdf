@@ -1,0 +1,23 @@
+module testit/testmodules/ruletests/Defined
+
+exports
+	sorts A
+	
+	context-free start-symbols A
+	
+	%% \ must be escaped by \\
+	
+	context-free syntax
+		"empty" -> A {definedAs("")}
+		"chars" -> A {definedAs("afasdfs asdf3 [4] -> A {}")}
+		"escaped doublequote" -> A {definedAs("\"")}
+		"quote" -> A {definedAs("'")}
+		"escaped backslash" -> A {definedAs("\\")}
+		"escaped char" -> A {definedAs("\\$")}
+		"escaped whitespace" -> A {definedAs("\\ ")}
+		"tilde" -> A {definedAs("~")}
+		"escaped new line" -> A {definedAs("\n")}
+		"escaped carriage return" -> A {definedAs("\\r")}
+		"escaped tab" -> A {definedAs("\t")}
+		"escaped number" -> A {definedAs("\\100")}
+		"an error" -> A {definedAs("\\100"),definedAs("\\100")}

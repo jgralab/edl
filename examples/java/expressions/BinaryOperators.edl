@@ -1,0 +1,38 @@
+module java/expressions/BinaryOperators
+imports
+  java/expressions/Main
+  java/types/Main
+
+exports
+  sorts CondMid
+  context-free syntax
+    rule Expr "instanceof" RefType -> Expr {cons("InstanceOf")}
+
+    rule Expr "*"   Expr -> Expr  {left, cons("Mul")}
+    rule Expr "/"   Expr -> Expr  {left, cons("Div")}
+    rule Expr "%"   Expr -> Expr  {left, cons("Remain")}
+
+    rule Expr "+"   Expr -> Expr  {left, cons("Plus")}
+    rule Expr "-"   Expr -> Expr  {left, cons("Minus")}
+
+    rule Expr "<<"  Expr -> Expr  {left, cons("LeftShift")}
+    rule Expr ">>"  Expr -> Expr  {left, cons("RightShift")}
+    rule Expr ">>>" Expr -> Expr  {left, cons("URightShift")}
+
+    rule Expr "<"   Expr -> Expr  {left, cons("Lt")}
+    rule Expr ">"   Expr -> Expr  {left, cons("Gt")}
+    rule Expr "<="  Expr -> Expr  {left, cons("LtEq")}
+    rule Expr ">="  Expr -> Expr  {left, cons("GtEq")}
+    rule Expr "=="  Expr -> Expr  {left, cons("Eq")}
+    rule Expr "!="  Expr -> Expr  {left, cons("NotEq")}
+
+    rule Expr "&&"  Expr -> Expr  {left, cons("LazyAnd")}
+    rule Expr "||"  Expr -> Expr  {left, cons("LazyOr")}
+
+    rule Expr "&" Expr -> Expr {left, cons("And")}
+    rule Expr "^" Expr -> Expr {left, cons("ExcOr")}
+    rule Expr "|" Expr -> Expr {left, cons("Or")}
+
+    %% todo JFR-30
+    rule Expr CondMid Expr -> Expr {right, cons("Cond")}
+    rule "?" Expr ":" -> CondMid {bracket}

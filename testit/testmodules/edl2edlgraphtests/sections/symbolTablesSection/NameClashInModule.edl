@@ -1,0 +1,11 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+imports Test2
+symbol tables
+	first<Identifier>
+	
+module Test2
+symbol tables
+	first<Term,SemanticAction>
+	first<Identifier>

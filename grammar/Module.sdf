@@ -1,0 +1,35 @@
+module grammar/Module
+
+imports
+	grammar/sections/Main
+	grammar/terms/Main
+
+hiddens
+	sorts ModuleWord ModuleId
+
+exports
+	sorts Module ModuleName
+	
+	lexical syntax
+		[A-Za-z0-9\_\-]+ -> ModuleWord {cons("word"),definedAs("[A-Za-z0-9\\_\\-]+ -> ModuleWord {cons(\"word\")}")}
+		
+		ModuleWord				-> ModuleId {cons("leaf"),definedAs("ModuleWord -> ModuleId {cons(\"leaf\")}")}	%% leaf
+		"/" ModuleID			-> ModuleId {cons("root"),definedAs("\"/\" ModuleID -> ModuleId {cons(\"root\")}")} %% root
+		ModuleWord "/" ModuleId	-> ModuleId {cons("path"),definedAs("ModuleWord \"/\" ModuleId -> ModuleId {cons(\"path\")}")} %% path
+	
+	lexical restrictions
+		ModuleWord -/- [A-Za-z0-9\_\-]
+		ModuleId -/- [\/]
+	
+	context-free syntax
+		"module" ModuleName InitialSection* Section* -> Module {cons("module"),definedAs("\"module\" ModuleName InitialSection* Section* -> Module {cons(\"module\")}")}
+		
+		ModuleId					-> ModuleName {cons("unparameterized"),definedAs("ModuleId -> ModuleName {cons(\"unparameterized\")}")}
+		ModuleId "[" Term* "]"		-> ModuleName {cons("parameterized"),definedAs("ModuleId \"[\" Term* \"]\" -> ModuleName {cons(\"parameterized\")}")}
+		Keyword			 			-> ModuleName {reject,definedAs("Keyword -> ModuleName {reject}")}
+		
+		"module"					-> Keyword {definedAs("\"module\" -> Keyword")}
+	
+	restrictions
+		"module"			-/- [A-Za-z0-9]
+		<ModuleName -CF>	-/- [A-Za-z0-9\_\-]

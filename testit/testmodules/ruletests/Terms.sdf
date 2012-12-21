@@ -1,0 +1,56 @@
+module testit/testmodules/ruletests/Terms
+
+exports
+	sorts A
+	
+	lexical start-symbols A
+	
+	context-free start-symbols C
+	
+	context-free syntax
+							-> C {definedAs("->C")}
+		[a]?				-> C {definedAs("[a]?->C")}
+		()					-> C {definedAs("()->C")}
+		(())				-> D {definedAs("(())->D")}
+		([b])				-> C {definedAs("([b])->C")}
+		(([b]))				-> D {definedAs("(([b]))->D")}
+		([c] [d])			-> C {definedAs("([c] [d])->C")}
+		[e]*				-> C {definedAs("[e]*->C")}
+		[f]+				-> C {definedAs("[f]+->C")}
+		{[g] [h]}*			-> C {definedAs("{[g] [h]}*->C")}
+		{[i] [j]}+			-> C {definedAs("{[i] [j]}+->C")}
+		[k] | [l]			-> C {definedAs("[k] | [l]->C")}
+		[m] | [n] | [o]		-> C {definedAs("[m] | [n] | [o]->C")}
+		<[p], [q]>			-> C {definedAs("<[p], [q]>->C")}
+		<[r], [s], [t]>		-> C {definedAs("<[r], [s], [t]>->C")}
+		( => [u])			-> C {definedAs("( => [u])->C")}
+		([v] => [w])		-> C {definedAs("([v] => [w])->C")}
+		([x] [y] => [z])	-> C {definedAs("([x] [y] => [z])->C")}
+		([A] -> [B])		-> C {definedAs("([A] -> [B])->C")}
+		func1()				-> C {definedAs("func1()->C")}
+		func2([C])			-> C {definedAs("func2([C])->C")}
+		func3([D],[E])		-> C {definedAs("func3([D],[E])->C")}
+	
+	lexical syntax
+							-> A {definedAs("->A")}
+		[a]?				-> A {definedAs("[a]?->A")}
+		()					-> A {definedAs("()->A")}
+		(())				-> B {definedAs("(())->B")}
+		([b])				-> A {definedAs("([b])->A")}
+		(([b]))				-> B {definedAs("(([b]))->B")}
+		([c] [d])			-> A {definedAs("([c] [d])->A")}
+		[e]*				-> A {definedAs("[e]*->A")}
+		[f]+				-> A {definedAs("[f]+->A")}
+		{[g] [h]}*			-> A {definedAs("{[g] [h]}*->A")}
+		{[i] [j]}+			-> A {definedAs("{[i] [j]}+->A")}
+		[k] | [l]			-> A {definedAs("[k] | [l]->A")}
+		[m] | [n] | [o]		-> A {definedAs("[m] | [n] | [o]->A")}
+		<[p], [q]>			-> A {definedAs("<[p], [q]>->A")}
+		<[r], [s], [t]>		-> A {definedAs("<[r], [s], [t]>->A")}
+		( => [u])			-> A {definedAs("( => [u])->A")}
+		([v] => [w])		-> A {definedAs("([v] => [w])->A")}
+		([x] [y] => [z])	-> A {definedAs("([x] [y] => [z])->A")}
+		([A] -> [B])		-> A {definedAs("([A] -> [B])->A")}
+		func1()				-> A {definedAs("func1()->A")}
+		func2([C])			-> A {definedAs("func2([C])->A")}
+		func3([D],[E])		-> A {definedAs("func3([D],[E])->A")}

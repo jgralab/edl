@@ -1,0 +1,5 @@
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+default values
+	Identifier.name = "";
+	X.length = 0;

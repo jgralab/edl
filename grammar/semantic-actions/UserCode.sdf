@@ -1,0 +1,24 @@
+module grammar/semantic-actions/UserCode
+
+imports
+	grammar/semantic-actions/SemanticAction
+
+hiddens
+	sorts Content
+
+exports
+	sorts UserCode
+	
+	lexical syntax
+		~[\{\}\#]* -> JavaCode {definedAs("~[\\{\\}\\#]* -> JavaCode")}
+	
+	lexical restrictions
+		~[\{\}\#]* -/- ~[\{\}\#]
+	
+	context-free syntax
+		"{" "}"						-> UserCode {prefer,cons("empty user-code"),definedAs("\"{\" \"}\" -> UserCode {prefer,cons(\"empty user-code\")}")}
+		"{" {JavaCode Content}+ "}"	-> UserCode {cons("user-code"),definedAs("\"{\" {JavaCode Content}+ \"}\" -> UserCode {cons(\"user-code\")}")}
+		
+		UserCode					-> Content {definedAs("UserCode -> Content")}
+		SemanticAction				-> Content {definedAs("SemanticAction -> Content")}
+		ExpressionSemanticAction	-> Content {avoid,definedAs("ExpressionSemanticAction -> Content {avoid}")}

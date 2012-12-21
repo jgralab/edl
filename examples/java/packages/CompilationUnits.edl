@@ -1,0 +1,42 @@
+%%%
+ %% Section 7.3: CompilationUnits
+ %%
+ %% @author Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/packages/CompilationUnits
+imports
+  java/packages/PackageDeclarations
+  java/packages/ImportDeclarations
+  java/packages/TypeDeclarations
+
+exports
+  sorts
+    CompilationUnit
+
+  context-free syntax
+    rule
+	  #{statements = 0;}
+	   $ = SourceFile();
+	   $.name = file();
+	   $packageDecl = {return defaultPackage;};
+	   {packagePrefix = "";}
+	  #
+	  (
+	    #{isPackageDeclaration = true;}#
+		PackageDec
+		#{isPackageDeclaration = false;}
+		 $packageDecl = $0;
+		 {packagePrefix = #$0.qualifiedName#.toString();}
+		#
+      )?
+	  ImportDec
+	    #Imports($,$0);#
+	  *
+	  TypeDec
+	    #Defines($,$0);
+		 ContainsType($packageDecl, $0);
+		#
+	  * -> CompilationUnit   {cons("CompilationUnit")}
+	  #$.lines = {return currentElement.getLastLine();};
+	   $.numberOfStmts = {return statements;};
+	  #

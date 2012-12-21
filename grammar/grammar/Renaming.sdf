@@ -1,0 +1,17 @@
+module grammar/grammar/Renaming
+
+imports
+	grammar/terms/Main
+	grammar/grammar/Production
+
+hiddens
+	sorts Renaming
+
+exports
+	sorts Renamings
+	
+	context-free syntax
+		"[" Renaming* "]" -> Renamings {cons("renamings"),definedAs("\"[\" Renaming* \"]\" -> Renamings {cons(\"renamings\")}")}
+		
+		Term          "=>" Term				-> Renaming {cons("symbol"),definedAs("Term \"=>\" Term -> Renaming {cons(\"symbol\")}")}
+		OldProduction "=>" OldProduction	-> Renaming {cons("production"),definedAs("OldProduction \"=>\" OldProduction -> Renaming {cons(\"production\")}")}

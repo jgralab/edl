@@ -1,0 +1,25 @@
+%%%
+ %% Section 4.4: Type Variables
+ %%
+ %% @author Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/types/TypeVariables
+imports
+  java/lexical/Identifiers
+  java/types/ReferenceTypes
+
+exports
+  sorts
+    TypeParams
+    TypeParam
+    TypeBound
+    TypeVarId
+  
+  context-free syntax
+    rule TypeVarId TypeBound? -> TypeParam {cons("TypeParam")}
+    
+    rule "extends" {ClassOrInterfaceType "&"}+ -> TypeBound {cons("TypeBound")}
+    rule "<" {TypeParam ","}+ ">" -> TypeParams {cons("TypeParams")}
+
+    rule Id -> TypeVarId
+    

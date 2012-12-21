@@ -1,0 +1,18 @@
+%%
+%% Grammar for XML 1.1
+%%
+%% The rules of this grammar are extracted of
+%% http://www.w3.org/TR/2006/REC-xml11-20060816/
+%%
+%% 2.9 Standalone Document Declaration
+module xml/Standalone
+
+imports xml/Prolog %% Eq
+
+exports
+	sorts SDDecl
+	
+	context-free syntax
+		%% [32]
+		rule "standalone" Eq [\"] ("yes"|"no") [\"] -> SDDecl
+		rule "standalone" Eq [\'] ("yes"|"no") [\'] -> SDDecl

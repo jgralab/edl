@@ -1,0 +1,15 @@
+module grammar/sections/ExportsSection
+
+imports
+	grammar/grammar/Main
+
+exports
+	sorts Section
+	
+	context-free syntax
+		"exports" Grammar -> Section {cons("exports"),definedAs("\"exports\" Grammar -> Section {cons(\"exports\")}")}
+		
+		"exports"	-> Keyword {definedAs("\"exports\" -> Keyword")}
+
+	restrictions
+		"exports" -/- [A-Za-z0-9]

@@ -1,0 +1,33 @@
+%%
+%% Grammar for XML 1.1
+%%
+%% The rules of this grammar are extracted of
+%% http://www.w3.org/TR/2006/REC-xml11-20060816/
+%%
+%% 3.2 Element Type Declarations
+module xml/ElementTypeDeclarations
+
+imports xml/Characters %% Name
+
+exports
+	sorts Elementdecl Contentspec Children Cp Choice Seq Mixed
+	
+	context-free syntax
+		%% [45]
+		rule  "<!ELEMENT" Name Contentspec ">" -> Elementdecl
+		%% [46]
+		rule "EMPTY" -> Contentspec
+		rule "ANY" -> Contentspec
+		rule Mixed -> Contentspec
+		rule Children -> Contentspec
+		%% [47]
+		rule (Choice | Seq) ("?" | "*" | "+")? -> Children
+		%% [48]
+		rule (Name | Choice | Seq) ("?" | "*" | "+")? -> Cp
+		%% [49]
+		rule "(" {Cp "|"}+ ")" -> Choice
+		%% [50]
+		rule "(" {Cp ","}* ")" -> Seq
+		%% [51]
+		rule "(" "#PCDATA" ("|" Name)* ")*" -> Mixed
+		rule "(" "#PCDATA" ")" -> Mixed

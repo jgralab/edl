@@ -1,0 +1,11 @@
+module testit/testmodules/ruletests/Lex2cf
+
+exports
+	sorts A B
+	
+	context-free start-symbols A
+	
+	context-free syntax
+		"a" -> A
+	lexical syntax
+		"b" -> B

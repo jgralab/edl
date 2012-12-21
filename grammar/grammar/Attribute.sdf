@@ -1,0 +1,54 @@
+module grammar/grammar/Attribute
+
+imports
+	grammar/Module
+	grammar/grammar/ATerms
+
+hiddens
+	sorts ATermAttribute
+
+exports
+	sorts Attribute Associativity
+	
+	context-free syntax
+		ATermAttribute			-> Attribute {cons("term"),definedAs("ATermAttribute -> Attribute {cons(\"term\")}")}
+		"id" "(" ModuleName ")"	-> Attribute {cons("id"),definedAs("\"id\" \"(\" ModuleName \")\" -> Attribute {cons(\"id\")}")}
+		"reject"				-> Attribute {cons("reject"),definedAs("\"reject\" -> Attribute {cons(\"reject\")}")}
+		"prefer"				-> Attribute {cons("prefer"),definedAs("\"prefer\" -> Attribute {cons(\"prefer\")}")}
+		"avoid"					-> Attribute {cons("avoid"),definedAs("\"avoid\" -> Attribute {cons(\"avoid\")}")}
+		"bracket"				-> Attribute {cons("bracket"),definedAs("\"bracket\" -> Attribute {cons(\"bracket\")}")}
+		Associativity			-> Attribute {cons("assoc"),definedAs("Associativity -> Attribute {cons(\"assoc\")}")}
+		
+		ATerm					-> ATermAttribute {cons("default"),definedAs("ATerm -> ATermAttribute {cons(\"default\")}")}
+		Associativity			-> ATermAttribute {reject,definedAs("Associativity -> ATermAttribute {reject}")}
+		"reject"				-> ATermAttribute {reject,definedAs("\"reject\" -> ATermAttribute {reject}")}
+		"prefer"				-> ATermAttribute {reject,definedAs("\"prefer\" -> ATermAttribute {reject}")}
+		"avoid"					-> ATermAttribute {reject,definedAs("\"avoid\" -> ATermAttribute {reject}")}
+		"bracket"				-> ATermAttribute {reject,definedAs("\"bracket\" -> ATermAttribute {reject}")}
+		"id" "(" ModuleName ")"	-> ATermAttribute {reject,definedAs("\"id\" \"(\" ModuleName \")\" -> ATermAttribute {reject}")}
+		
+		"left"		-> Associativity {cons("left"),definedAs("\"left\" -> Associativity {cons(\"left\")}")}
+		"right"		-> Associativity {cons("right"),definedAs("\"right\" -> Associativity {cons(\"right\")}")}
+		"non-assoc"	-> Associativity {cons("non-assoc"),definedAs("\"non-assoc\" -> Associativity {cons(\"non-assoc\")}")}
+		"assoc"		-> Associativity {cons("assoc"),definedAs("\"assoc\" -> Associativity {cons(\"assoc\")}")}
+		
+		"left"		-> Keyword {definedAs("\"left\" -> Keyword")}
+		"right"		-> Keyword {definedAs("\"right\" -> Keyword")}
+		"assoc"		-> Keyword {definedAs("\"assoc\" -> Keyword")}
+		"non-assoc"	-> Keyword {definedAs("\"non-assoc\" -> Keyword")}
+		"bracket"	-> Keyword {definedAs("\"bracket\" -> Keyword")}
+		"reject"	-> Keyword {definedAs("\"reject\" -> Keyword")}
+		"prefer"	-> Keyword {definedAs("\"prefer\" -> Keyword")}
+		"avoid"		-> Keyword {definedAs("\"avoid\" -> Keyword")}
+		"bracket"	-> Keyword {definedAs("\"bracket\" -> Keyword")}
+		"id"		-> Keyword {definedAs("\"id\" -> Keyword")}
+
+	restrictions
+		"left"		-/- [A-Za-z0-9]
+		"right"		-/- [A-Za-z0-9]
+		"non-assoc"	-/- [A-Za-z0-9]
+		"assoc"		-/- [A-Za-z0-9]
+		"reject"	-/- [A-Za-z0-9]
+		"prefer"	-/- [A-Za-z0-9]
+		"avoid"		-/- [A-Za-z0-9]
+		"bracket"	-/- [A-Za-z0-9]

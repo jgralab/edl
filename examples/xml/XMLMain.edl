@@ -1,0 +1,13 @@
+%%
+%% Grammar for XML 1.1
+%%
+%% The rules of this grammar are extracted of
+%% http://www.w3.org/TR/2006/REC-xml11-20060816/
+%%
+module xml/XMLMain
+schema de.uni_koblenz.jgralab.utilities.xml2tg.schema.XMLSchema
+
+imports xml/Document %% Document
+
+exports
+	context-free start-symbols Document

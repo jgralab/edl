@@ -1,0 +1,11 @@
+%%%
+ %% Chapter 9: Interfaces
+ %%
+ %% @author Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/interfaces/Main
+imports
+  java/interfaces/InterfaceDeclarations
+  java/interfaces/AbstractMethodDeclarations
+  java/interfaces/AnnotationTypes
+  java/interfaces/Annotations

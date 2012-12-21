@@ -1,0 +1,10 @@
+module grammar/basics/Identifier
+
+exports
+	sorts IdCon
+
+	lexical syntax
+		[A-Za-z] [A-Za-z\-0-9]* -> IdCon {cons("default"),definedAs("[A-Za-z] [A-Za-z\\-0-9]* -> IdCon {cons(\"default\")}")}
+
+	lexical restrictions
+		IdCon -/- [A-Za-z\-0-9]

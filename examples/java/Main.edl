@@ -1,0 +1,52 @@
+module java/Main
+schema de.uni_koblenz.jgralab.demo.schema.JavaSchema
+imports
+  java/lexical/Main
+  java/types/Main
+  java/names/Main
+  java/packages/Main
+  java/classes/Main
+  java/interfaces/Main
+  java/arrays/Main
+  java/statements/Main
+  java/expressions/Main
+symbol tables
+	name2Package<JavaPackage>
+	name2NamedElement<NamedElement>
+	name2Member<NamedElement<--Declares>:JavaType
+default values
+	Imports.lineNumber = line(omega);
+	Defines.lineNumber = line(omega);
+import declarations
+	java.util.List;
+	de.uni_koblenz.jgralab.TemporaryVertex;
+	de.uni_koblenz.edl.parser.Position;
+user code{
+	private Vertex defaultPackage;
+	
+	{
+		defaultPackage = createVertex("JavaPackage", new Position());
+		defaultPackage.setAttribute("simpleName","");
+		defaultPackage.setAttribute("qualifiedName","");
+	}
+	
+	private boolean isPackageDeclaration = false;
+	
+	private String packagePrefix;
+	
+	private int statements = 0;
+
+	@SuppressWarnings("unchecked")
+	public void blessAllTemporaryVerticesToJavaTypes(){
+		List<TemporaryVertex> tempVertices = (List<TemporaryVertex>) #name2NamedElement.getTemporaryVertices()#;
+		for (TemporaryVertex tempVert: tempVertices) {
+			tempVert.bless(getVertexClass("JavaType"));
+		}
+		List<TemporaryVertex> tempPackages = (List<TemporaryVertex>) #name2Package.getTemporaryVertices()#;
+		for (TemporaryVertex tempPackage: tempPackages) {
+			tempPackage.bless(getVertexClass("JavaPackage"));
+		}
+	}
+}
+exports
+  context-free start-symbols CompilationUnit

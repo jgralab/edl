@@ -1,0 +1,41 @@
+module java/lexical/Modifiers
+exports
+  sorts
+    Public
+    Private
+    Protected
+    Abstract
+    Final
+    Static
+    Native
+    Transient
+    Volatile
+    Synchronized
+    StrictFP
+    Modifier
+
+  context-free syntax
+    rule "public"       -> Public       {cons("Public")}
+    rule "private"      -> Private      {cons("Private")}
+    rule "protected"    -> Protected    {cons("Protected")}
+
+    rule "abstract"     -> Abstract     {cons("Abstract")}
+    rule "final"        -> Final        {cons("Final")}
+    rule "static"       -> Static       {cons("Static")}
+    rule "native"       -> Native       {cons("Native")}
+    rule "transient"    -> Transient    {cons("Transient")}
+    rule "volatile"     -> Volatile     {cons("Volatile")}
+    rule "synchronized" -> Synchronized {cons("Synchronized")}
+    rule "strictfp"     -> StrictFP     {cons("StrictFP")}
+
+    rule Public       -> Modifier
+    rule Private      -> Modifier
+    rule Protected    -> Modifier
+    rule Abstract     -> Modifier
+    rule Final        -> Modifier
+    rule Static       -> Modifier
+    rule Native       -> Modifier
+    rule Transient    -> Modifier
+    rule Volatile     -> Modifier
+    rule Synchronized -> Modifier
+    rule StrictFP     -> Modifier

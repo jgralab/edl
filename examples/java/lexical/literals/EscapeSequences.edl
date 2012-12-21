@@ -1,0 +1,29 @@
+%%%
+ %% Section 3.10.6: Escape Sequences for Character and String Literals
+ %%
+ %% @author Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/lexical/literals/EscapeSequences
+imports
+
+exports
+  sorts
+    EscapeSeq
+    NamedEscape
+    OctaEscape
+    LastOcta
+
+  lexical syntax
+    rule OctaEscape  -> EscapeSeq
+    rule NamedEscape -> EscapeSeq
+
+    rule "\\" [btnfr\"\'\\]        -> NamedEscape {cons("NamedEscape")}
+    rule "\\" LastOcta             -> OctaEscape  {cons("OctaEscape1")}
+    rule "\\" [0-3] LastOcta       -> OctaEscape  {cons("OctaEscape2")}
+    rule "\\" [4-7] LastOcta       -> OctaEscape  {cons("OctaEscape2")}
+    rule "\\" [0-3] [0-7] LastOcta -> OctaEscape  {cons("OctaEscape3")}
+
+    rule [0-7] -> LastOcta
+
+  lexical restrictions
+    LastOcta -/- [0-7]

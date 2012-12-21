@@ -1,0 +1,12 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	lexical syntax
+		rule B C #$=3;# D -> A {bracket} #$=null;#
+		rule p() -> A #$=0;#
+		rule B1 C1 #$=$0;# D1 -> A1 #$1=$0;#
+		rule p(X2) -> A2 #$2=$1;#
+		rule (A3#lift($0);#) -> A3 #$=$0;#
+		rule b:B4 C4 #$0=$b;# D4 -> A4 #$0=$b;#
+		rule #$=0;# p(X5,Y5) -> A2 #$2=$1;#

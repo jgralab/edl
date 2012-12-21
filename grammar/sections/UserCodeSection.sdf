@@ -1,0 +1,22 @@
+module grammar/sections/UserCodeSection
+
+imports
+	grammar/semantic-actions/UserCode
+
+hiddens
+	sorts UserCodeSection
+
+exports
+	sorts InitialSection Keyword
+	
+	context-free syntax
+		UserCodeSection -> InitialSection {cons("user-code-section"),definedAs("UserCodeSection -> InitialSection {cons(\"user-code-section\")}")}
+	
+		"user" "code" UserCode+ -> UserCodeSection {cons("user-code-sec"),definedAs("\"user\" \"code\" UserCode+ -> UserCodeSection {cons(\"user-code-sec\")}")}
+		
+		"user"	-> Keyword {definedAs("\"user\" -> Keyword")}
+		"code"	-> Keyword {definedAs("\"code\" -> Keyword")}
+	
+	restrictions
+		"user"	-/- [A-Za-z0-9]
+		"code"	-/- [A-Za-z0-9]

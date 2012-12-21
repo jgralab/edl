@@ -1,0 +1,25 @@
+module grammar/terms/Sort
+
+imports
+	grammar/terms/Main
+
+hiddens
+	sorts Sort
+
+exports
+	sorts Term
+	
+	lexical syntax
+		[A-Z]								-> Sort {cons("one-char"),definedAs("[A-Z] -> Sort {cons(\"one-char\")}")}
+		[A-Z] [A-Za-z0-9\-]* [A-Za-z0-9]	-> Sort {cons("more-chars"),definedAs("[A-Z] [A-Za-z0-9\\-]* [A-Za-z0-9] -> Sort {cons(\"more-chars\")}")}
+		"LAYOUT"							-> Sort {reject,definedAs("\"LAYOUT\" -> Sort {reject}")}
+	
+	lexical restrictions
+		Sort -/- [A-Za-z0-9]
+	
+	context-free syntax
+		Sort						-> Term {cons("sort"),definedAs("Sort -> Term {cons(\"sort\")}")}
+		Sort "[[" {Term ","}+ "]]"	-> Term {cons("parameterized-sort"),definedAs("Sort \"[[\" {Term \",\"}+ \"]]\" -> Term {cons(\"parameterized-sort\")}")}
+
+	restrictions
+		<Sort -CF>		-/- [A-Za-z0-9]

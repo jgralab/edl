@@ -1,0 +1,22 @@
+%%
+%% Grammar for XML 1.1
+%%
+%% The rules of this grammar are extracted of
+%% http://www.w3.org/TR/2006/REC-xml11-20060816/
+%%
+%% 2.8 Prolog and Document Type Declaration
+module xml/ExternalSubset
+
+imports xml/DTD %% Markupdecl
+imports xml/ConditionalSections %% ConditionalSect
+imports xml/References %% PEReference
+imports xml/ParsedEntities %% TextDecl
+
+exports
+	sorts ExtSubset ExtSubsetDecl
+	
+	context-free syntax
+		%% [30]
+		rule TextDecl? ExtSubsetDecl -> ExtSubset
+		%% [31]
+		rule (Markupdecl | ConditionalSect | PEReference)* -> ExtSubsetDecl

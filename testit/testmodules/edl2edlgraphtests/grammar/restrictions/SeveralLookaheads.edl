@@ -1,0 +1,13 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	lexical restrictions
+		A1 -/- [a]
+		A2 -/- [a].[b]
+		A3 -/- [a].[b].[c]
+		A4 -/- [a].([b].[c])
+		A5 -/- [a].([b].[c]|[d].[e])
+		A6 -/- [a].[[]]
+		A7 -/- [a].[[[b].[c]]]
+		A8 -/- [a].[[[b].[c],[d]]]

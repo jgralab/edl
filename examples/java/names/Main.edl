@@ -1,0 +1,72 @@
+%%%
+ %% Chapter 6: Names
+ %%
+ %% @author Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/names/Main
+imports
+  java/lexical/Identifiers
+import declarations
+	de.uni_koblenz.jgralab.EdgeDirection;
+user code{
+	private boolean isContainsPackageAlreadyCreated(Vertex parentPackage, Vertex pack) {
+		for (Edge edge: pack.incidences(getEdgeClass("ContainsPackage"), EdgeDirection.IN)) {
+			if (edge.getThat() == parentPackage) {
+				return true;
+			}
+		}
+		return false;
+	}
+}
+exports
+  sorts PackageName
+  context-free syntax
+    rule
+	  #$qualName = "";
+	   $parentPackage = {return defaultPackage;};
+	  #
+	  {
+	    Id #{
+          if (isPackageDeclaration) {
+		    #$qualName = $qualName.concat(lexem($0));
+			 $package = name2Package.use($qualName);
+			#
+			if (#$package# == null) {
+				#
+				 $package = JavaPackage();
+				 $package.simpleName = lexem($0);
+				 $package.qualifiedName = $qualName;
+				 $package = name2Package.declare($qualName, $package);
+				#
+			}
+		    if (!isContainsPackageAlreadyCreated((Vertex) #$parentPackage#, (Vertex) #$package#)) {
+			    #ContainsPackage($parentPackage, $package);#
+			}
+			#$parentPackage = $package;#
+		  }
+        }#		
+		"." #$qualName = $qualName.concat(".");#
+	  }+ -> PackageName {cons("PackageName")}
+
+  sorts
+    TypeName
+    ExprName
+    MethodName
+    PackageOrTypeName
+    AmbName
+
+  context-free syntax
+    rule Id             -> AmbName {cons("AmbName")}
+    rule AmbName "." Id -> AmbName {cons("AmbName")}
+
+    rule Id                       -> TypeName {cons("TypeName")}
+    rule PackageOrTypeName "." Id -> TypeName {cons("TypeName")}
+
+    rule Id             -> ExprName {cons("ExprName")}
+    rule AmbName "." Id -> ExprName {cons("ExprName")}
+
+    rule Id             -> MethodName  {cons("MethodName")}
+    rule AmbName "." Id -> MethodName  {cons("MethodName")}
+
+    rule Id                       -> PackageOrTypeName {cons("PackageOrTypeName")}
+    rule PackageOrTypeName "." Id -> PackageOrTypeName {cons("PackageOrTypeName")}

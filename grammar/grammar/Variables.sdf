@@ -1,0 +1,17 @@
+module grammar/grammar/Variables
+
+imports
+	grammar/grammar/Production
+	grammar/terms/PrefixFunction
+
+exports
+	sorts Grammar
+	
+	context-free syntax
+		          "variables" OldProduction* -> Grammar {cons("variables"),definedAs("\"variables\" OldProduction* -> Grammar {cons(\"variables\")}")}
+		"lexical" "variables" OldProduction* -> Grammar {cons("lexical-variables"),definedAs("\"lexical\" \"variables\" OldProduction* -> Grammar {cons(\"lexical-variables\")}")}
+		
+		"variables"	-> Keyword {definedAs("\"variables\" -> Keyword")}
+
+	restrictions
+		"variables" -/- [A-Za-z0-9]

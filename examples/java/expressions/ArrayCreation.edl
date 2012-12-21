@@ -1,0 +1,32 @@
+%%%
+ %% Section 15.10: Array Creation Expressions
+ %%
+ %% @author  Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/expressions/ArrayCreation
+imports
+  java/expressions/Main
+
+exports
+  sorts
+    ArrayCreationExpr
+    ArrayBaseType
+    Dim
+    DimExpr
+
+  context-free syntax
+    rule ArrayCreationExpr     -> Expr
+
+    rule "new" ArrayBaseType DimExpr+ Dim* -> SubArrayCreationExpr 
+	rule SubArrayCreationExpr -> ArrayCreationExpr {cons("NewArray")}
+    rule "new" ArrayBaseType Dim+ ArrayInit -> ArrayCreationExpr {cons("NewArray")}
+
+    rule PrimType -> ArrayBaseType
+    rule TypeName -> ArrayBaseType
+    rule TypeName "<" "?" ">" -> ArrayBaseType {cons("UnboundWld")}
+
+    rule "[" Expr "]" -> DimExpr {cons("Dim")}
+    rule "[" "]"      -> Dim     {cons("Dim")}
+  context-free restrictions
+    SubArrayCreationExpr -/- [\[]
+

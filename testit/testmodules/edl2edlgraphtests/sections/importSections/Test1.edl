@@ -1,0 +1,3 @@
+module Test1
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+imports Test2

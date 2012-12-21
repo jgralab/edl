@@ -1,0 +1,12 @@
+module grammar/terms/Main
+
+imports
+	grammar/terms/Term
+	grammar/terms/Basic
+	grammar/terms/Lifting
+	grammar/terms/Sort
+	grammar/terms/Label
+	grammar/terms/CharacterClass
+	grammar/terms/PrefixFunction
+	grammar/terms/Literal
+	grammar/terms/AbbreviationTerm

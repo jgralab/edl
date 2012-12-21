@@ -1,0 +1,20 @@
+%%%
+ %% Section 15.11: Field Access Expressions
+ %%
+ %% @author  Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/expressions/FieldAccess
+imports
+  java/expressions/Main
+
+exports
+  sorts FieldAccess
+  context-free syntax
+    rule FieldAccess -> Expr
+
+  context-free syntax
+
+    rule                 Expr "." Id -> FieldAccess {cons("Field")}
+    rule             ExprName "." Id -> FieldAccess {reject}
+    rule              "super" "." Id -> FieldAccess {cons("SuperField")}
+    rule TypeName "." "super" "." Id -> FieldAccess {cons("QSuperField")}

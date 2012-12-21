@@ -1,0 +1,10 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	context-free syntax
+		rule ()			-> A
+		rule (#$a=0;#)	-> B
+		rule (#$a=0;# C1 #$0=0;#) -> C
+		rule (#$a=0;# D1 #$0=0;# D2 #$1=0;#) -> D
+		rule (#$a=0;# E1 #$0=0;# E2 #$1=0;# E3 #$2=0;#) -> E

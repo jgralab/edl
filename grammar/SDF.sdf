@@ -1,0 +1,22 @@
+module grammar/SDF
+
+imports
+	grammar/Module
+	grammar/basics/Whitespace
+
+hiddens
+	sorts Definition
+
+exports
+	sorts SDF
+	
+	context-free syntax
+		Definition	-> SDF {definedAs("Definition -> SDF")}
+		Module		-> SDF {definedAs("Module -> SDF")}
+		
+		"definition" Module* -> Definition {cons("definition"),definedAs("\"definition\" Module* -> Definition {cons(\"definition\")}")}
+		
+		"definition"	-> Keyword {definedAs("\"definition\" -> Keyword")}
+	
+	restrictions
+		"definition" -/- [A-Za-z0-9]

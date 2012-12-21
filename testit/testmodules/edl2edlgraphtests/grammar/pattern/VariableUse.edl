@@ -1,0 +1,13 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+symbol tables
+	aTable<Identifier>
+global actions
+	pattern _(*) -> A #$1=7;$=$1;$2=$;#
+	pattern _(5)-> A #$1=aTable.use($);#
+	pattern -> B #$a=4;$b=$a;#
+	pattern p() -> A #$1=7;$=$1;$2=$;#
+	pattern p() -> A #$1=aTable.use($);#
+	pattern p() -> B #$a=4;$b=$a;#
+	

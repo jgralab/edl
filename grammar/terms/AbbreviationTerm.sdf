@@ -1,0 +1,13 @@
+module grammar/terms/AbbreviationTerm
+
+imports
+	grammar/terms/Main
+	grammar/semantic-actions/SemanticAction
+
+exports
+	sorts Term
+	
+	context-free syntax
+		"<" SemanticAction* Term SemanticAction* "," {(SemanticAction* Term SemanticAction*) ","}+ ">"	-> Term {cons("tuple"),definedAs("\"<\" SemanticAction* Term SemanticAction* \",\" {(SemanticAction* Term SemanticAction*) \",\"}+ \">\" -> Term {cons(\"tuple\")}")}
+		"(" Terms "=>" Term ")"																			-> Term {cons("func"),definedAs("\"(\" Terms \"=>\" Term \")\" -> Term {cons(\"func\")}")}
+		"(" Term "->" Term ")"																			-> Term {cons("strategy"),definedAs("\"(\" Term \"->\" Term \")\" -> Term {cons(\"strategy\")}")}

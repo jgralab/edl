@@ -1,0 +1,9 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	context-free syntax
+		rule #$a=0f;$a=1F;$a=-2d;$a=+3D;# -> A1
+		rule #$a=0.;$b=.1;$c=10.34;# -> A2
+		rule #$a=1e2;$b=1e+2;$c=1e-2;# -> A3
+		rule #$a=+0x1.p2;$b=0x.1p+2;$c=0xa.ap-2;$d=-0xfP-2;# -> A4

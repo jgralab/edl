@@ -1,0 +1,13 @@
+module grammar/semantic-actions/Statements
+
+imports
+	grammar/semantic-actions/UserCode
+	grammar/semantic-actions/Expressions
+
+exports
+	sorts Statement
+	
+	context-free syntax
+		";"						-> Statement {cons("empty statement"),definedAs("\";\" -> Statement {cons(\"empty statement\")}")}
+		StatementExpression ";"	-> Statement {cons("expression statement"),definedAs("StatementExpression \";\" -> Statement {cons(\"expression statement\")}")}
+		UserCode				-> Statement {cons("user-code statement"),definedAs("UserCode -> Statement {cons(\"user-code statement\")}")}

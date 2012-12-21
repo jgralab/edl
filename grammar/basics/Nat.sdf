@@ -1,0 +1,13 @@
+module grammar/basics/Nat
+
+exports
+	sorts NatCon
+
+	lexical syntax
+		[0-9]+ -> NatCon {cons("digits"),definedAs("[0-9]+ -> NatCon {cons(\"digits\")}")}
+
+	lexical restrictions
+		NatCon -/- [0-9]
+	
+	restrictions
+		<NatCon -CF> -/- [0-9]

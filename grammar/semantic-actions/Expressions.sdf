@@ -1,0 +1,84 @@
+module grammar/semantic-actions/Expressions
+
+imports
+	grammar/semantic-actions/UserCode
+	grammar/sections/SymbolTablesSection
+	grammar/basics/JavaIdentifier
+	grammar/java-literals/IntegerLiterals
+	grammar/java-literals/FloatingPointLiterals
+	grammar/java-literals/StringLiterals
+
+hiddens
+	sorts HeadVar BodyVar TempVar Var ObjectExpression MethodCall Field EnumCons MethodName
+
+exports
+	sorts Expression
+	
+	lexical syntax
+		"$"	-> HeadVar {definedAs("\"$\" -> HeadVar")}
+	
+		"$" [0]			-> BodyVar {definedAs("\"$\" [0] -> BodyVar")}
+		"$" [1-9][0-9]*	-> BodyVar {definedAs("\"$\" [1-9][0-9]* -> BodyVar")}
+		
+		"$" JavaId	-> TempVar {definedAs("\"$\" JavaId -> Var")}
+		
+		[a-z][A-Za-z0-9\_\$]*	-> MethodName {definedAs("[a-z][A-Za-z0-9\\_\\$]* -> MethodName")}
+		[A-Z][A-Za-z0-9\_\$]*	-> EnumCons {definedAs("[A-Z][A-Za-z0-9\\_\\$]* -> EnumCons")}
+	
+	lexical restrictions
+		HeadVar		-/- [0-9A-Za-z\_\$]
+		BodyVar		-/- [0-9A-Za-z\_\$]
+		MethodName	-/- [0-9A-Za-z\_\$]
+		EnumCons	-/- [0-9A-Za-z\_\$]
+	
+	context-free syntax
+		HeadVar		-> Var {cons("head var"),definedAs("HeadVar -> Var {cons(\"head var\")}")}
+		BodyVar		-> Var {cons("body var"),definedAs("BodyVar -> Var {cons(\"body var\")}")}
+		TempVar		-> Var {cons("var"),definedAs("TempVar -> Var {cons(\"var\")}")}
+		STableName	-> Var {avoid,cons("symbol table or user defined var"),definedAs("STableName -> Var {avoid,cons(\"symbol table or user defined var\")}")}
+		
+		[\+\-] IntLiteral -> IntLiteral {definedAs("[\\+\\-] IntLiteral -> IntLiteral")}
+		[\+\-] FloatLiteral -> FloatLiteral {definedAs("[\\+\\-] FloatLiteral -> FloatLiteral")}
+		
+		Assignment						-> StatementExpression {definedAs("Assignment -> StatementExpression")}
+		ConstructorCall					-> StatementExpression {definedAs("ConstructorCall -> StatementExpression")}
+		MethodCall						-> StatementExpression {definedAs("MethodCall -> StatementExpression")}
+		ObjectExpression "." MethodCall	-> StatementExpression {definedAs("ObjectExpression \".\" MethodCall -> StatementExpression")}
+		
+		ObjectExpression				-> Expression {definedAs("ObjectExpression -> Expression")}
+		"null"							-> Expression {cons("null"),definedAs("\"null\" -> Expression {cons(\"null\")}")}
+		"true"							-> Expression {cons("true"),definedAs("\"true\" -> Expression {cons(\"true\")}")}
+		"false"							-> Expression {cons("false"),definedAs("\"false\" -> Expression {cons(\"false\")}")}
+		IntLiteral						-> Expression {cons("int"),definedAs("IntLiteral -> Expression {cons(\"int\")}")}
+		FloatLiteral					-> Expression {cons("double"),definedAs("FloatLiteral -> Expression {cons(\"double\")}")}
+		StringLiteral					-> Expression {cons("string"),definedAs("StringLiteral -> Expression {cons(\"string\")}")}
+		Assignment						-> Expression {definedAs("Assignment -> Expression")}
+	
+		"alpha"								-> ObjectExpression {cons("alpha"),definedAs("\"alpha\" -> ObjectExpression {cons(\"alpha\")}")}
+		"omega"								-> ObjectExpression {cons("omega"),definedAs("\"omega\" -> ObjectExpression {cons(\"omega\")}")}
+		UserCode							-> ObjectExpression {cons("user-code Exp"),definedAs("UserCode -> ObjectExpression {cons(\"user-code Exp\")}")}
+		Var									-> ObjectExpression {cons("variable"),definedAs("Var -> ObjectExpression {cons(\"variable\")}")}
+		MethodCall							-> ObjectExpression {cons("method call"),definedAs("MethodCall -> ObjectExpression {cons(\"method call\")}")}
+		ObjectExpression "." MethodCall		-> ObjectExpression {cons("dynamic method call"),definedAs("ObjectExpression \".\" MethodCall -> ObjectExpression {cons(\"dynamic method call\")}")}
+		ObjectExpression "." Field			-> ObjectExpression {cons("field access"),definedAs("ObjectExpression \".\" Field -> ObjectExpression {cons(\"field access\")}")}
+		ObjectExpression "." "alpha"		-> ObjectExpression {cons("alpha access"),definedAs("ObjectExpression \".\" \"alpha\" -> ObjectExpression {cons(\"alpha access\")}")}
+		ObjectExpression "." "omega"		-> ObjectExpression {cons("omega access"),definedAs("ObjectExpression \".\" \"omega\" -> ObjectExpression {cons(\"omega access\")}")}
+		GraphElementClass "." EnumCons		-> ObjectExpression {prefer,cons("enum access"),definedAs("GraphElementClass \".\" EnumCons -> ObjectExpression {prefer,cons(\"enum access\")}")}
+		ConstructorCall						-> ObjectExpression {definedAs("ConstructorCall -> ObjectExpression")}
+		ObjectExpression "[" Expression "]"	-> ObjectExpression {cons("list element access"),definedAs("ObjectExpression \"[\" Expression \"]\" -> ObjectExpression {cons(\"list element access\")}")}
+		
+		ObjectExpression "=" Expression -> Assignment {cons("assignment"),definedAs("ObjectExpression \"=\" Expression -> Assignment {cons(\"assignment\")}")}
+		
+		GraphElementClass "(" {Expression ","}* ")"	-> ConstructorCall {cons("constructor call"),definedAs("GraphElementClass \"(\" {Expression \",\"}* \")\" -> ConstructorCall {cons(\"constructor call\")}")}
+		
+		MethodName "(" {Expression ","}* ")"	-> MethodCall {cons("method"),definedAs("MethodName \"(\" {Expression \",\"}* \")\" -> MethodCall {cons(\"method\")}")}
+		
+		JavaId		-> Field {cons("Field"),definedAs("JavaId -> Field {cons(\"Field\")}")}
+		"alpha"		-> Field {reject,definedAs("\"alpha\" -> Field {reject}")}
+		"omega" 	-> Field {reject,definedAs("\"omega\" -> Field {reject}")}
+		
+		"null"	-> Keyword {definedAs("\"null\" -> Keyword")}
+		"true"	-> Keyword {definedAs("\"true\" -> Keyword")}
+		"false"	-> Keyword {definedAs("\"false\" -> Keyword")}
+		"alpha"	-> Keyword {definedAs("\"alpha\" -> Keyword")}
+		"omega"	-> Keyword {definedAs("\"omega\" -> Keyword")}

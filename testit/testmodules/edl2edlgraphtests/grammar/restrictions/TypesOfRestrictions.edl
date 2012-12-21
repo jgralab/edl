@@ -1,0 +1,12 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+exports
+	restrictions
+		-/- [a]
+	lexical restrictions
+		A -/- [a]
+	context-free restrictions
+		B C -/- [a]
+		[a] -/- [a]
+	restrictions 

@@ -1,0 +1,8 @@
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+default values
+	common.EDLEdge.length = length(omega);
+	Identifier.name = "";
+default values
+	common.EDLEdge.length = length(alpha);
+	Identifier.name = "aName";

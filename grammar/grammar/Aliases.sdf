@@ -1,0 +1,20 @@
+module grammar/grammar/Aliases
+
+imports
+	grammar/terms/Main
+
+hiddens
+	sorts Alias
+
+exports
+	sorts Grammar
+	
+	context-free syntax
+		"aliases" Alias* -> Grammar {cons("aliases"),definedAs("\"aliases\" Alias* -> Grammar {cons(\"aliases\")}")}
+		
+		Term "->" Term -> Alias {cons("alias"),definedAs("Term \"->\" Term -> Alias {cons(\"alias\")}")}
+		
+		"aliases"	-> Keyword {definedAs("\"aliases\" -> Keyword")}
+
+	restrictions
+		"aliases" -/- [A-Za-z0-9]

@@ -1,0 +1,15 @@
+module grammar/terms/Basic
+
+imports
+	grammar/terms/Main
+
+exports
+	sorts Term
+	
+	context-free syntax
+		"<START>"			-> Term {cons("start"),definedAs("\"<START>\" -> Term {cons(\"start\")}")} %% start rule
+		"<Start>"			-> Term {cons("file-start"),definedAs("\"<Start>\" -> Term {cons(\"file-start\")}")} %% start of file
+		"<" Term "-CF" ">"	-> Term {cons("cf"),definedAs("\"<\" Term \"-CF\" \">\" -> Term {cons(\"cf\")}")}
+		"<" Term "-LEX" ">"	-> Term {cons("lex"),definedAs("\"<\" Term \"-LEX\" \">\" -> Term {cons(\"lex\")}")}
+		"<" Term "-VAR" ">"	-> Term {cons("varsym"),definedAs("\"<\" Term \"-VAR\" \">\" -> Term {cons(\"varsym\")}")}
+		"LAYOUT"			-> Term {cons("layout"),definedAs("\"LAYOUT\" -> Term {cons(\"layout\")}")}

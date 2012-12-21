@@ -1,0 +1,15 @@
+%%%
+ %% Section 8.6: Instance Initializers
+ %%
+ %% @author  Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/classes/InstanceInitializers
+imports
+  java/statements/Blocks
+
+exports
+  sorts
+    InstanceInit
+
+  context-free syntax
+    rule Block -> InstanceInit {cons("InstanceInit")}

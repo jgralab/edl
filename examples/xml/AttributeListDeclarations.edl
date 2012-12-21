@@ -1,0 +1,44 @@
+%%
+%% Grammar for XML 1.1
+%%
+%% The rules of this grammar are extracted of
+%% http://www.w3.org/TR/2006/REC-xml11-20060816/
+%%
+%% 3.3 Attribute-List Declarations
+module xml/AttributeListDeclarations
+
+imports xml/Characters %% Name Nmtoken AttValue
+
+exports
+	sorts AttlistDecl AttDef AttType StringType TokenizedType EnumeratedType NotationType Enumeration DefaultDecl
+	
+	context-free syntax
+		%% [52]
+		rule "<!ATTLIST" Name AttDef* ">" -> AttlistDecl
+		%% [53]
+		rule Name AttType DefaultDecl -> AttDef
+		%% [54]
+		rule StringType -> AttType
+		rule TokenizedType -> AttType
+		rule EnumeratedType -> AttType
+		%% [55]
+		rule "CDATA" -> StringType
+		%% [56]
+		rule "ID" -> TokenizedType
+		rule "IDREF" -> TokenizedType
+		rule "IDREFS" -> TokenizedType
+		rule "ENTITY" -> TokenizedType
+		rule "ENTITIES" -> TokenizedType
+		rule "NMTOKEN" -> TokenizedType
+		rule "NMTOKENS" -> TokenizedType
+		%% [57]
+		rule NotationType -> EnumeratedType
+		rule Enumeration -> EnumeratedType
+		%% [58]
+		rule "NOTATION" "(" {Name "|"}* ")" -> NotationType
+		%% [59]
+		rule "(" {Nmtoken "|"}* ")" -> Enumeration
+		%% [60]
+		rule "#REQUIRED" -> DefaultDecl
+		rule "#IMPLIED" -> DefaultDecl
+		rule "#FIXED"? AttValue -> DefaultDecl

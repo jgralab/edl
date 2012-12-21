@@ -1,0 +1,9 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+imports Test2
+
+module Test2
+exports
+	lexical syntax
+		rule -> A {id(Test)}

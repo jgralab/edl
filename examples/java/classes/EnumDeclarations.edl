@@ -1,0 +1,64 @@
+%%%
+ %% Section 8.9: Enums
+ %%
+ %% @author  Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/classes/EnumDeclarations
+imports
+  java/lexical/Identifiers
+  java/classes/ClassDeclarations
+
+exports
+  sorts
+    EnumDec
+    EnumDecHead
+    EnumBody
+    EnumConst
+    EnumConstArgs
+    EnumBodyDecs
+
+  context-free syntax
+    @Symboltable{name2Member}
+    rule
+	  #$ = JavaType();
+	   $.kind = TypeKind.ENUM;
+	   name2Member.namespace = $;
+	  #
+	  EnumDecHead
+	  #$.simpleName = $0;
+	   $packagePrefix = {return packagePrefix;};
+	   {packagePrefix += (packagePrefix.isEmpty()? "" : ".") + #$.simpleName#;}
+	   $.qualifiedName = {return packagePrefix;};
+	   name2NamedElement.declare($.qualifiedName, $);
+	  #
+	  EnumBody -> EnumDec {cons("EnumDec")}
+	  #{packagePrefix = #$packagePrefix#.toString();}#
+
+    rule (Anno | ClassMod)* "enum" Id Interfaces? -> EnumDecHead {cons("EnumDecHead")} #$=lexem($2);#
+
+    rule
+	  "{"
+	  {
+	    EnumConst
+	    #$mem = JavaMember();
+	     $mem.simpleName = $0;
+	     name2Member.declare($mem.simpleName, $mem);
+	    #
+	    ","
+	   }*
+	   EnumBodyDecs? "}" -> EnumBody {cons("EnumBody")}
+    rule
+	  "{"
+	  {
+	    EnumConst
+	    #$mem = JavaMember();
+	     $mem.simpleName = $0;
+	     name2Member.declare($mem.simpleName, $mem);
+	    #
+	    ","
+	  }* "," EnumBodyDecs? "}" -> EnumBody {cons("EnumBody")}
+
+    rule Id EnumConstArgs? ClassBody?  -> EnumConst {cons("EnumConst")} #$ = lexem($0);#
+    rule "(" {Expr ","}* ")"  -> EnumConstArgs {bracket}
+
+    rule ";" ClassBodyDec* -> EnumBodyDecs {cons("EnumBodyDecs")}

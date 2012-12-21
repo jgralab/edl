@@ -1,0 +1,27 @@
+%%%
+ %% Section 4.2: Primitive Types and Values
+ %%
+ %% @author Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/types/PrimitiveTypes
+exports
+  sorts
+    PrimType
+    NumType
+    IntType  
+    FloatType
+
+  context-free syntax
+    rule NumType   -> PrimType
+    rule "boolean" -> PrimType {cons("Boolean")}
+
+    rule IntType   -> NumType
+    rule FloatType -> NumType
+
+    rule "byte"   -> IntType   {cons("Byte")}
+    rule "short"  -> IntType   {cons("Short")}
+    rule "int"    -> IntType   {cons("Int")}
+    rule "long"   -> IntType   {cons("Long")}
+    rule "char"   -> IntType   {cons("Char")}
+    rule "float"  -> FloatType {cons("Float")}
+    rule "double" -> FloatType {cons("Double")}

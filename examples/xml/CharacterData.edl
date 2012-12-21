@@ -1,0 +1,19 @@
+%%
+%% Grammar for XML 1.1
+%%
+%% The rules of this grammar are extracted of
+%% http://www.w3.org/TR/2006/REC-xml11-20060816/
+%%
+%% 2.4 Character Data and Markup
+module xml/CharacterData
+
+imports xml/Cdata %% Bracket
+
+exports
+	sorts CharData
+	
+	lexical syntax
+		%% [14]
+		rule (~[\<\&\]]|Bracket)+ -> CharData #$=Text(); $.content=lexem($);#
+	lexical restrictions
+		CharData -/- ~[\<\&]

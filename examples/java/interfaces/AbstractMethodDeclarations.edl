@@ -1,0 +1,29 @@
+module java/interfaces/AbstractMethodDeclarations
+imports
+  java/lexical/Modifiers
+  java/names/Main
+  java/types/Main
+  java/classes/MethodDeclarations
+  
+global actions
+  pattern _(9..10) -> AbstractMethodCec
+    #$ = JavaMember();
+	 $.simpleName = lexem($3);
+	 name2Member.declare($, $);
+	#
+
+exports
+  sorts
+    AbstractMethodDec
+    AbstractMethodMod
+
+  context-free syntax
+    rule (Anno | AbstractMethodMod)* TypeParams? ResultType
+       Id "(" {FormalParam ","}* ")" Throws? ";" -> AbstractMethodDec {cons("AbstractMethodDec")}
+
+    rule (Anno | AbstractMethodMod)* TypeParams? ResultType
+       Id "(" {FormalParam ","}* ")" Dim+ Throws? ";" -> AbstractMethodDec {cons("DeprAbstractMethodDec")}
+
+    rule Public   -> AbstractMethodMod
+    rule Abstract -> AbstractMethodMod
+

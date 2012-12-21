@@ -1,0 +1,35 @@
+module grammar/grammar/Restrictions
+
+imports
+	grammar/terms/Main
+
+hiddens
+	sorts Restriction Lookaheads Lookahead
+
+exports
+	sorts Grammar
+	
+	context-free syntax
+					   "restrictions" Restriction*	-> Grammar {cons("restrictions"),definedAs("\"restrictions\" Restriction* -> Grammar {cons(\"restrictions\")}")}
+		"lexical"      "restrictions" Restriction*	-> Grammar {cons("lexical-restrictions"),definedAs("\"lexical\" \"restrictions\" Restriction* -> Grammar {cons(\"lexical-restrictions\")}")}
+		"context-free" "restrictions" Restriction*	-> Grammar {cons("context-free-restrictions"),definedAs("\"context-free\" \"restrictions\" Restriction* -> Grammar {cons(\"context-free-restrictions\")}")}
+		
+		"restrictions"	-> Keyword {definedAs("\"restrictions\" -> Keyword")}
+		
+		Term* "-/-" Lookaheads -> Restriction {cons("follow"),definedAs("Term* \"-/-\" Lookaheads -> Restriction {cons(\"follow\")}")}
+		
+		Lookahead					-> Lookaheads {cons("single"),definedAs("Lookahead -> Lookaheads {cons(\"single\")}")}
+		Lookaheads "|" Lookaheads	-> Lookaheads {right,cons("alt"),definedAs("Lookaheads \"|\" Lookaheads -> Lookaheads {right,cons(\"alt\")}")}
+		"(" Lookaheads ")"			-> Lookaheads {bracket,definedAs("\"(\" Lookaheads \")\" -> Lookaheads {bracket}")}
+		"[[" {Lookahead ","}* "]]"	-> Lookaheads {cons("list"),definedAs("\"[[\" {Lookahead \",\"}* \"]]\" -> Lookaheads {cons(\"list\")}")}
+		
+		CharClass					-> Lookahead {cons("char-class"),definedAs("CharClass -> Lookahead {cons(\"char-class\")}")}
+		CharClass "." Lookaheads	-> Lookahead {cons("seq"),definedAs("CharClass \".\" Lookaheads -> Lookahead {cons(\"seq\")}")}
+	
+	context-free priorities
+		CharClass "." Lookaheads	-> Lookahead
+		>
+		Lookaheads "|" Lookaheads	-> Lookaheads {right}
+
+	restrictions
+		"restrictions" -/- [A-Za-z0-9]

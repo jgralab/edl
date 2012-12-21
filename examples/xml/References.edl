@@ -1,0 +1,28 @@
+%%
+%% Grammar for XML 1.1
+%%
+%% The rules of this grammar are extracted of
+%% http://www.w3.org/TR/2006/REC-xml11-20060816/
+%%
+%% 4.1 Character and Entity References
+module xml/References
+
+imports xml/Characters %% Name
+
+global actions
+	pattern _(1) -> Reference #$=Text(); $.content=lexem($);#
+
+exports
+	sorts CharRef Reference EntityRef PEReference
+	
+	lexical syntax
+		%% [66]
+		rule "&#" [0-9]+ ";" -> CharRef
+		rule "&#x" [0-9a-fA-F]+ ";" -> CharRef
+		%% [67]
+		rule EntityRef -> Reference
+		rule CharRef -> Reference
+		%% [68]
+		rule "&" Name ";" -> EntityRef
+		%% [69]
+		rule "%" Name ";" -> PEReference

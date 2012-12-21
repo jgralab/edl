@@ -1,0 +1,26 @@
+module grammar/terms/PrefixFunction
+
+imports
+	grammar/terms/Main
+	grammar/basics/Identifier
+	grammar/grammar/Production
+	grammar/grammar/Pattern
+	grammar/semantic-actions/SemanticAction
+
+hiddens
+	sorts FunctionName
+
+exports
+	sorts Production
+	
+	context-free syntax
+		IdCon	-> FunctionName {cons("unquoted-fun"),definedAs("IdCon -> FunctionName {cons(\"unquoted-fun\")}")}
+		StrCon	-> FunctionName {cons("quoted-fun"),definedAs("StrCon -> FunctionName {cons(\"quoted-fun\")}")}
+		
+		"pattern" FunctionName "(" {PatternTerm ","}* ")" "->" PatternTerm	SemanticAction+ -> Pattern {avoid, cons("prefix-fun pattern"),definedAs("\"pattern\" FunctionName \"(\" {PatternTerm \",\"}* \")\" \"->\" PatternTerm SemanticAction+ -> Pattern {avoid, cons(\"prefix-fun pattern\")}")}
+		
+		"rule" SemanticAction* FunctionName SemanticAction* "(" (SemanticAction*| {(SemanticAction* Term SemanticAction*) ","}+) ")" SemanticAction* "->" Term Attributes SemanticAction* -> Production {avoid, cons("prefix-fun prod"),definedAs("\"rule\" SemanticAction* FunctionName SemanticAction* \"(\" (SemanticAction*| {(SemanticAction* Term SemanticAction*) \",\"}+) \")\" SemanticAction* \"->\" Term Attributes SemanticAction* -> Production {avoid, cons(\"prefix-fun prod\")}")}
+		
+		FunctionName "(" {Term ","}* ")" "->" Term Attributes -> OldProduction {avoid, cons("prefix-fun prod"),definedAs("FunctionName \"(\" {Term \",\"}* \")\" \"->\" Term Attributes -> OldProduction {avoid, cons(\"prefix-fun prod\")}")}
+		
+		SemanticAction* FunctionName SemanticAction* "(" (SemanticAction*| {(SemanticAction* Term SemanticAction*) ","}+) ")" SemanticAction* -> Terms {reject,definedAs("SemanticAction* FunctionName SemanticAction* \"(\" (SemanticAction*| {(SemanticAction* Term SemanticAction*) \",\"}+) \")\" SemanticAction* -> Terms {reject}")}

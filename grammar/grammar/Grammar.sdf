@@ -1,0 +1,19 @@
+module grammar/grammar/Grammar
+
+imports
+	grammar/grammar/Main
+
+exports
+	sorts Grammar
+	
+	context-free syntax
+		"(/)"			-> Grammar {cons("empty-grammar"),definedAs("\"(/)\" -> Grammar {cons(\"empty-grammar\")}")}	%% empty grammar
+		Grammar Grammar	-> Grammar {assoc,cons("conc-grammars"),definedAs("Grammar Grammar -> Grammar {assoc,cons(\"conc-grammars\")}")}
+		"(" Grammar ")"	-> Grammar {bracket,definedAs("\"(\" Grammar \")\" -> Grammar {bracket}")}
+		
+		"context-free"	-> Keyword {definedAs("\"context-free\" -> Keyword")}
+		"lexical"		-> Keyword {definedAs("\"lexical\" -> Keyword")}
+
+	restrictions
+		"lexical" -/- [A-Za-z0-9]
+		"context-free" -/- [A-Za-z0-9]

@@ -1,0 +1,16 @@
+module grammar/basics/Whitespace
+
+imports
+  grammar/basics/Comments
+
+exports
+	lexical syntax
+		[\ \t\n\r] -> Whitespace {cons("whitespace"),definedAs("[\\ \\t\\n\\r] -> Whitespace {cons(\"whitespace\")}")}
+		
+		Whitespace+ -> LAYOUT {definedAs("Whitespace+ -> LAYOUT")}
+	
+	lexical restrictions
+		LAYOUT -/- [\ \t\n\r\%]
+	
+	context-free restrictions
+		LAYOUT? -/- [\ \t\n\r\%]

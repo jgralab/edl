@@ -1,0 +1,16 @@
+module java/expressions/ArrayAccess
+imports
+  java/expressions/Main
+exports
+  sorts
+    ArrayAccess
+    ArraySubscript
+
+  context-free syntax
+    rule ArrayAccess -> Expr
+
+    %% todo: JFR-29
+    rule Expr ArraySubscript -> ArrayAccess {cons("ArrayAccess")}
+    rule "[" Expr "]" -> ArraySubscript {bracket}
+
+    %% rule ArrayCreationExpr ArraySubscript -> ArrayAccess {reject} %% chapter 18 permits it

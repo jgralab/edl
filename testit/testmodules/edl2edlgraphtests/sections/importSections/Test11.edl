@@ -1,0 +1,3 @@
+module Test11
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+imports (Test21)

@@ -1,0 +1,33 @@
+%%
+%% Grammar for XML 1.1
+%%
+%% The rules of this grammar are extracted of
+%% http://www.w3.org/TR/2006/REC-xml11-20060816/
+%%
+%% 4.2 Entity Declarations
+module xml/EntityDeclarations
+
+imports xml/Characters %% Name EntityValue SystemLiteral PubidLiteral
+
+exports
+	sorts EntityDecl GEDecl PEDecl EntityDef PEDef ExternalID NDataDecl
+	
+	context-free syntax
+		%% [70]
+		rule GEDecl -> EntityDecl
+		rule PEDecl -> EntityDecl
+		%% [71]
+		rule "<!ENTITY" Name EntityDef ">" -> GEDecl
+		%% [72]
+		rule "<!ENTITY" "%" Name PEDef ">" -> PEDecl
+		%% [73]
+		rule EntityValue -> EntityDef
+		rule ExternalID NDataDecl? -> EntityDef
+		%% [74]
+		rule EntityValue -> PEDef
+		rule ExternalID -> PEDef
+		%% [75]
+		rule "SYSTEM" SystemLiteral -> ExternalID
+		rule "PUBLIC" PubidLiteral SystemLiteral -> ExternalID
+		%% [76]
+		rule "NDATA" Name -> NDataDecl

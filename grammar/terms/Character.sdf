@@ -1,0 +1,27 @@
+module grammar/terms/Character
+
+hiddens
+	sorts NumChar ShortChar
+
+exports
+	sorts Character
+	
+	lexical syntax
+		[\\] [0-9]+	-> NumChar {cons("digits"),definedAs("[\\\\] [0-9]+ -> NumChar {cons(\"digits\")}")}
+		
+		[a-zA-Z0-9]						-> ShortChar {cons("regular"),definedAs("[a-zA-Z0-9] -> ShortChar {cons(\"regular\")}")}
+		[\\] ~[\0-\31A-Za-mo-qsu-z0-9]	-> ShortChar {cons("escaped"),definedAs("[\\\\] ~[\\0-\\31A-Za-mo-qsu-z0-9] -> ShortChar {cons(\"escaped\")}")}
+	
+	lexical restrictions
+		NumChar -/- [0-9]
+	
+	restrictions
+		<NumChar -CF> -/- [0-9]
+	
+	context-free syntax
+		NumChar			-> Character {cons("numeric"),definedAs("NumChar -> Character {cons(\"numeric\")}")}
+		ShortChar		-> Character {cons("short"),definedAs("ShortChar -> Character {cons(\"short\")}")}
+		"\\TOP"			-> Character {cons("top"),definedAs("\"\\\\TOP\" -> Character {cons(\"top\")}")}
+		"\\EOF"			-> Character {cons("eof"),definedAs("\"\\\\EOF\" -> Character {cons(\"eof\")}")}
+		"\\BOT"			-> Character {cons("bot"),definedAs("\"\\\\BOT\" -> Character {cons(\"bot\")}")}
+		"\\LABEL_START"	-> Character {cons("label_start"),definedAs("\"\\\\LABEL_START\" -> Character {cons(\"label_start\")}")}

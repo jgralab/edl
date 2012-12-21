@@ -1,0 +1,31 @@
+%%
+%% Grammar for XML 1.1
+%%
+%% The rules of this grammar are extracted of
+%% http://www.w3.org/TR/2006/REC-xml11-20060816/
+%%
+%% 3.4 Conditional Sections
+module xml/ConditionalSections
+
+imports xml/Cdata %% Bracket
+imports xml/ExternalSubset %% ExtSubsetDecl
+
+exports
+	sorts ConditionalSect IncludeSect IgnoreSect IgnoreSectContents Ignore OpenT
+	
+	context-free syntax
+		%% [61]
+		rule IncludeSect -> ConditionalSect
+		rule IgnoreSect -> ConditionalSect
+		%% [62]
+		rule "<![" "INCLUDE" "[" ExtSubsetDecl "]]>" -> IncludeSect
+		%% [63]
+		rule "<![" "IGNORE" "[" IgnoreSectContents* "]]>" -> IgnoreSect
+		%% [64]
+		rule Ignore ("<![" IgnoreSectContents) "]]>" Ignore)* -> IgnoreSectContents
+	lexical syntax
+		%% [65]
+		rule (~[\<\]] | Bracket | OpenT)* -> Ignore
+		rule [\<] -> OpenT
+	lexical restrictions
+		OpenT -/- [\!].[\[]

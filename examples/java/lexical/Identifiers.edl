@@ -1,0 +1,26 @@
+%%%
+ %% Section 3.8: Identifiers
+ %%
+ %% @author Martin Bravenboer <martin.bravenboer@gmail.com>
+ %%%
+module java/lexical/Identifiers
+imports
+  java/lexical/Keywords
+exports
+  sorts
+    Id
+    ID
+
+  context-free syntax
+    rule ID -> Id {cons("Id")}
+
+  lexical syntax
+    rule [A-Za-z\_\$\255][A-Za-z0-9\_\$\255\254]* -> ID
+    
+    rule Keyword -> ID {reject}
+    rule "true"  -> ID {reject}
+    rule "false" -> ID {reject}
+    rule "null"  -> ID {reject}
+
+  lexical restrictions
+    ID -/- [a-zA-Z0-9\_\$]

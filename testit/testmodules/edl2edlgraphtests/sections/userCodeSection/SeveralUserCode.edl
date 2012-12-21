@@ -1,0 +1,19 @@
+definition
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+user code{
+   
+}
+user code{
+	String firstName;
+}
+imports Test2
+
+module Test2
+user code{
+
+}
+user code{
+	String secondName;
+}
+user code { String thirdName;}{}{   }{String fourthName;}

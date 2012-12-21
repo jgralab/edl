@@ -1,0 +1,11 @@
+definition
+
+module Test
+schema de.uni_koblenz.edl.preprocessor.schema.EDLSchema
+imports Test2
+global actions
+	pattern -> A #$x = 3;#
+	
+module Test2
+global actions
+	pattern -> A #$x = 3;#

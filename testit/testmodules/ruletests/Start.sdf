@@ -1,0 +1,6 @@
+module testit/testmodules/ruletests/Start
+
+exports
+	start-symbols A B
+	lexical start-symbols C D
+	context-free start-symbols E F
