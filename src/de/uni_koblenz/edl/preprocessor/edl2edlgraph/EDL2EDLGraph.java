@@ -7106,25 +7106,26 @@ public class EDL2EDLGraph extends EDL2EDLGraphBaseImpl {
 			UserCode contentUserCode = (UserCode) content;
 			userCode.set_containsReturn(userCode.is_containsReturn()
 					|| contentUserCode.is_containsReturn());
-			if (contentUserCode.getDegree(IsContentOf.EC, EdgeDirection.IN) > 0) {
-				JavaCode javaCode = (JavaCode) createVertex(JavaCode.VC,
-						positionsMap.get(contentUserCode));
-				javaCode.set_content("{");
-				createEdge(IsJavaCodeOf.EC, javaCode, userCode);
+			// if (contentUserCode.getDegree(IsContentOf.EC, EdgeDirection.IN) >
+			// 0) {
+			JavaCode javaCode = (JavaCode) createVertex(JavaCode.VC,
+					positionsMap.get(contentUserCode));
+			javaCode.set_content("{");
+			createEdge(IsJavaCodeOf.EC, javaCode, userCode);
 
-				Edge edge = contentUserCode.getFirstIncidence(IsContentOf.EC,
+			Edge edge = contentUserCode.getFirstIncidence(IsContentOf.EC,
+					EdgeDirection.IN);
+			while (edge != null) {
+				edge.setOmega(userCode);
+				edge = contentUserCode.getFirstIncidence(IsContentOf.EC,
 						EdgeDirection.IN);
-				while (edge != null) {
-					edge.setOmega(userCode);
-					edge = contentUserCode.getFirstIncidence(IsContentOf.EC,
-							EdgeDirection.IN);
-				}
-
-				javaCode = (JavaCode) createVertex(JavaCode.VC,
-						positionsMap.get(contentUserCode));
-				javaCode.set_content("}");
-				createEdge(IsJavaCodeOf.EC, javaCode, userCode);
 			}
+
+			javaCode = (JavaCode) createVertex(JavaCode.VC,
+					positionsMap.get(contentUserCode));
+			javaCode.set_content("}");
+			createEdge(IsJavaCodeOf.EC, javaCode, userCode);
+			// }
 			deleteTree(contentUserCode);
 		} else if (content.isInstanceOf(StatementSemanticAction.VC)) {
 			StatementSemanticAction stmtSemAct = (StatementSemanticAction) content;
