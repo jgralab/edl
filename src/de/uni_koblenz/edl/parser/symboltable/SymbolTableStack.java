@@ -80,6 +80,12 @@ public class SymbolTableStack {
 		push();
 	}
 
+	public void reset() {
+		bottom = null;
+		top = null;
+		push();
+	}
+
 	/**
 	 * @return {@link InternalGraphBuilder} {@link #graphBuilder}
 	 */
