@@ -131,7 +131,7 @@ public class TreeTraverser implements ITreeBuilder {
 	 */
 	@Override
 	public ITokenizer getTokenizer() {
-		startTimeOfParsing = System.currentTimeMillis();
+		startTimeOfParsing = System.nanoTime();
 		return null;
 	}
 
@@ -155,16 +155,15 @@ public class TreeTraverser implements ITreeBuilder {
 	 */
 	@Override
 	public Object buildTree(AbstractParseNode node) {
-		((GraphBuilderBaseImpl) graphBuilder).addToParseTime(System
-				.currentTimeMillis() - startTimeOfParsing);
+		((GraphBuilderBaseImpl) graphBuilder).addToParseTime(System.nanoTime()
+				- startTimeOfParsing);
 		if (GraphBuilderBaseImpl.printDebugInformationToTheConsole) {
 			System.out.println("\tExecuting semantic actions...");
 		}
-		long startTime = System.currentTimeMillis();
+		long startTime = System.nanoTime();
 		traverse(node);
 		((GraphBuilderBaseImpl) graphBuilder)
-				.addToSemanticActionExecutionTime(System.currentTimeMillis()
-						- startTime);
+				.addToSemanticActionExecutionTime(System.nanoTime() - startTime);
 		return node;
 	}
 

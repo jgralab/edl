@@ -213,10 +213,19 @@ public interface GraphBuilder {
 	 */
 	public Graph getGraph();
 
+	/**
+	 * @return nano sec
+	 */
 	public long getParseTime();
 
+	/**
+	 * @return nano sec
+	 */
 	public long getSemanticActionExecutionTime();
 
+	/**
+	 * @return nano sec
+	 */
 	public long getTotalTime();
 
 	public long getGraphSize();

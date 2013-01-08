@@ -180,7 +180,9 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 	/**
 	 * Stores the position of the parse table.
 	 */
-	private final String parseTable;
+	private final String parseTablePosition;
+
+	private ParseTable parseTable;
 
 	/**
 	 * Stores the initial position of the currently parsed input.
@@ -201,7 +203,7 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 		this.schema = schema;
 		graph = schema.createGraph(ImplementationType.STANDARD);
 		positionsMap = new HashMap<Vertex, Position>();
-		this.parseTable = parseTable;
+		this.parseTablePosition = parseTable;
 	}
 
 	/**
@@ -216,7 +218,7 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 		this.graph = graph;
 		schema = graph.getSchema();
 		positionsMap = new HashMap<Vertex, Position>();
-		this.parseTable = parseTable;
+		this.parseTablePosition = parseTable;
 	}
 
 	/**
@@ -227,7 +229,7 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 	 */
 	protected GraphBuilderBaseImpl(String parseTable) {
 		positionsMap = new HashMap<Vertex, Position>();
-		this.parseTable = parseTable;
+		this.parseTablePosition = parseTable;
 	}
 
 	@Override
@@ -354,7 +356,8 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 				return getGraph();
 			} else {
 				initialPosition = new Position(0, input.length(), 1, 0);
-				return parseInput(inputFile, input, treeTraverser);
+				Graph returnGraph = parseInput(inputFile, input, treeTraverser);
+				return returnGraph;
 
 			}
 		} catch (ParseError e) {
@@ -373,8 +376,8 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 	}
 
 	/**
-	 * Uses {@link #parseTable} and <code>treeTraverser</code> to create a new
-	 * "Stratego/XT" interpreter to parse <code>input</code>. The created
+	 * Uses {@link #parseTablePosition} and <code>treeTraverser</code> to create
+	 * a new "Stratego/XT" interpreter to parse <code>input</code>. The created
 	 * {@link Graph} is returned.
 	 * 
 	 * @param inputFile
@@ -395,20 +398,23 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 	private Graph parseInput(String inputFile, String input,
 			TreeTraverser treeTraverser) throws SGLRException, ParseError,
 			IOException, InvalidParseTableException {
+		resetMeasuredValues();
 		InputStream parseTableStream = null;
 		try {
-			if (new File(parseTable).exists()) {
-				parseTableStream = new BufferedInputStream(new FileInputStream(
-						parseTable));
-			} else {
-				parseTableStream = this.getClass().getResourceAsStream(
-						parseTable);
+			if (parseTable == null) {
+				if (new File(parseTablePosition).exists()) {
+					parseTableStream = new BufferedInputStream(
+							new FileInputStream(parseTablePosition));
+				} else {
+					parseTableStream = this.getClass().getResourceAsStream(
+							parseTablePosition);
+				}
+				final TermFactory factory = new TermFactory();
+				final IStrategoTerm tableTerm = new TermReader(factory)
+						.parseFromStream(parseTableStream);
+				parseTable = new ParseTable(tableTerm, factory);
 			}
-			final TermFactory factory = new TermFactory();
-			final IStrategoTerm tableTerm = new TermReader(factory)
-					.parseFromStream(parseTableStream);
-			final ParseTable pt = new ParseTable(tableTerm, factory);
-			final SGLR sglr = new SGLR(treeTraverser, pt);
+			final SGLR sglr = new SGLR(treeTraverser, parseTable);
 
 			sglr.setUseStructureRecovery(false);
 			sglr.getDisambiguator().setFilterCycles(true);
@@ -419,7 +425,8 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 			if (printDebugInformationToTheConsole) {
 				System.out.println("\tParsing...");
 			}
-			return (Graph) sglr.parse(input, inputFile, null);
+			Graph resultGraph = (Graph) sglr.parse(input, inputFile, null);
+			return resultGraph;
 		} finally {
 			if (parseTableStream != null) {
 				parseTableStream.close();
@@ -1125,6 +1132,13 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 
 	public void addToSizeOfInternalParseForest(long value) {
 		sizeOfInternalParseForest += value;
+	}
+
+	private void resetMeasuredValues() {
+		parseTime = 0;
+		executionTime = 0;
+		inputSize = 0;
+		sizeOfInternalParseForest = 0;
 	}
 
 	/*
