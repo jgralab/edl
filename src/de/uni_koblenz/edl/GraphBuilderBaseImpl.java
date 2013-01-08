@@ -191,6 +191,8 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 
 	protected TreeTraverser treeTraverser;
 
+	private SGLR sglr;
+
 	/**
 	 * Creates a new {@link GraphBuilderBaseImpl}.
 	 * 
@@ -341,7 +343,9 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 	public Graph parseInput(String inputFile, String input, boolean debugMode,
 			boolean verboseMode, boolean dotMode, String dotOutputFormat) {
 		initializeModi(debugMode, verboseMode, dotMode, dotOutputFormat);
-		treeTraverser = new TreeTraverser(this);
+		if (treeTraverser == null) {
+			treeTraverser = new TreeTraverser(this);
+		}
 		try {
 			if (isIslandGrammar()) {
 				for (Position pos : determineIslands(inputFile, input)) {
@@ -414,7 +418,9 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 						.parseFromStream(parseTableStream);
 				parseTable = new ParseTable(tableTerm, factory);
 			}
-			final SGLR sglr = new SGLR(treeTraverser, parseTable);
+			if (sglr == null) {
+				sglr = new SGLR(treeTraverser, parseTable);
+			}
 
 			sglr.setUseStructureRecovery(false);
 			sglr.getDisambiguator().setFilterCycles(true);
