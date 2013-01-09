@@ -376,4 +376,8 @@ public class TreeTraverser implements ITreeBuilder {
 		}
 	}
 
+	@Override
+	public void reset(int arg0) {
+	}
+
 }
