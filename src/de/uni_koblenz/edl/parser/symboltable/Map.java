@@ -194,4 +194,9 @@ public class Map {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return map.toString();
+	}
+
 }
