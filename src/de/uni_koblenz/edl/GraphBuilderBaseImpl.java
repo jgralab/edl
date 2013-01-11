@@ -420,13 +420,12 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 			}
 			if (sglr == null) {
 				sglr = new SGLR(treeTraverser, parseTable);
+				sglr.setUseStructureRecovery(false);
+				sglr.getDisambiguator().setFilterCycles(true);
+				sglr.getDisambiguator().setFilterAny(true);
+				sglr.getDisambiguator().setHeuristicFilters(false);
+				sglr.getDisambiguator().setAmbiguityIsError(false);
 			}
-
-			sglr.setUseStructureRecovery(false);
-			sglr.getDisambiguator().setFilterCycles(true);
-			sglr.getDisambiguator().setFilterAny(true);
-			sglr.getDisambiguator().setHeuristicFilters(false);
-			sglr.getDisambiguator().setAmbiguityIsError(false);
 
 			if (printDebugInformationToTheConsole) {
 				System.out.println("\tParsing...");
