@@ -16,8 +16,6 @@ Build `jgralab` first and then `edl`.
 
     $ cd ../jgralab/
     $ ant
-    $ cd ../jgralab/
-    $ ant
     $ cd ../edl/
     $ ant
 
