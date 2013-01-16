@@ -7,16 +7,13 @@ The Extractor Description Language (EDL) can be used to create an extractor whic
 The project structure should be like this:
 
     jgsrc/               # your jgralab workspace
-    +-> common/          # the common project
     +-> jgralab/         # jgralab itself
 	+-> edl/             # this project
 
 Before building you need to create a folder `lib` in the `edl` project and insert the [strategoxt.jar] (http://hydra.nixos.org/job/strategoxt-java/strc-java-trunk/build). To build `EDL` you need to have [Apache Ant](http://ant.apache.org/).
 
-Build `common` first, then `jgralab` and finally `edl`.
+Build `jgralab` first and then `edl`.
 
-    $ cd jgsrc/common/
-    $ ant
     $ cd ../jgralab/
     $ ant
     $ cd ../jgralab/

@@ -8,7 +8,7 @@
 	<property name="rsa2tg.n" value="true" />
 	<property name="unjarexcludes" value="strategoxt.jar" />
 
-	<import file="../common/common.xml" />
+	<import file="../jgralab/common.xml" />
 	
 	<property name="schema.file" value="${project.dir}/src/de/uni_koblenz/edl/preprocessor/edlschema.tg" />
 	<property name="xmi.schema.file" value="${project.dir}/de.uni_koblenz.edl.schema.EDLSchema.xmi" />
