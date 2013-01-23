@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -1152,7 +1153,72 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 
 	public static Schema loadSchema(String pathToSchema)
 			throws GraphIOException {
-		return GraphIO.loadSchemaFromFile(pathToSchema);
+		InputStream directSchemaInputStream = null;
+		try {
+			directSchemaInputStream = new FileInputStream(pathToSchema);
+
+			return loadSchema(pathToSchema, directSchemaInputStream);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (directSchemaInputStream != null) {
+				try {
+					directSchemaInputStream.close();
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}
+	}
+
+	public static Schema loadSchema(String pathToSchema,
+			Class<? extends GraphBuilderBaseImpl> graphBuilderClass)
+			throws GraphIOException {
+		InputStream directSchemaInputStream = null;
+		try {
+			if (new File(pathToSchema).exists()) {
+				directSchemaInputStream = new FileInputStream(pathToSchema);
+			} else {
+				directSchemaInputStream = graphBuilderClass
+						.getResourceAsStream(pathToSchema);
+			}
+
+			return loadSchema(pathToSchema, directSchemaInputStream);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if (directSchemaInputStream != null) {
+				try {
+					directSchemaInputStream.close();
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param pathToSchema
+	 * @param directSchemaInputStream
+	 * @return
+	 * @throws IOException
+	 * @throws GraphIOException
+	 */
+	private static Schema loadSchema(String pathToSchema,
+			InputStream directSchemaInputStream) throws GraphIOException {
+		InputStream schemaInputStream = null;
+		if (pathToSchema.toLowerCase().endsWith(".gz")) {
+			try {
+				schemaInputStream = new GZIPInputStream(
+						directSchemaInputStream, 65536);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		} else {
+			schemaInputStream = new BufferedInputStream(
+					directSchemaInputStream, 65536);
+		}
+		return GraphIO.loadSchemaFromStream(schemaInputStream);
 	}
 
 	public static Schema instantiateSchema(Schema schema)

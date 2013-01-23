@@ -193,7 +193,8 @@ public class GraphBuilderFile {
 			appendable.append("\t\tSchema schema = instantiateSchema(");
 			if (pathOfSchema != null) {
 				appendable.append("loadSchema(")
-						.append(GraphIO.toUtfString(pathOfSchema)).append(")");
+						.append(GraphIO.toUtfString(pathOfSchema)).append(", ")
+						.append(className).append(".class)");
 			} else {
 				appendable.append("getSchemaClass(\"")
 						.append(schema.getQualifiedName()).append("\")");
