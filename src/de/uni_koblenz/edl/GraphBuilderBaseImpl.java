@@ -1331,8 +1331,13 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 	}
 
 	protected VertexClass getVertexClass(Object vertexClass) {
-		VertexClass vc = (VertexClass) schema
-				.getAttributedElementClass((String) vertexClass);
+		VertexClass vc = null;
+		if (vertexClass instanceof Vertex) {
+			vc = ((Vertex) vertexClass).getAttributedElementClass();
+		} else {
+			vc = (VertexClass) schema
+					.getAttributedElementClass((String) vertexClass);
+		}
 		if (vc != null) {
 			return vc;
 		}
