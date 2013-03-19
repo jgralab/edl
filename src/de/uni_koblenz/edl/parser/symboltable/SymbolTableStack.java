@@ -313,7 +313,7 @@ public class SymbolTableStack {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(nameOfSymbolTable
-				+ "from top to bottom:");
+				+ " from top to bottom:");
 		for (Map map = top; map != null; map = map.getParent()) {
 			sb.append("\n").append(map);
 		}
