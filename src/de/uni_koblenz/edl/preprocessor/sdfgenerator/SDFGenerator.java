@@ -189,8 +189,11 @@ public class SDFGenerator {
 		try {
 			Process process = Runtime
 					.getRuntime()
-					.exec(new String[] { sdf2tableName(), "-m", startModule, "-i",
-							pathOfDefinition, "-o", pathOfParseTable /* , "-t" */},
+					.exec(new String[] { sdf2tableName(), "-m", startModule,
+							"-i", pathOfDefinition, "-o", pathOfParseTable /*
+																			 * ,
+																			 * "-t"
+																			 */},
 							null, new File("./"));
 			BufferedInputStream errorstream = new BufferedInputStream(
 					process.getErrorStream());
@@ -984,7 +987,8 @@ public class SDFGenerator {
 		for (Edge edge : constructedTerm.incidences(EdgeDirection.IN)) {
 			if (edge.isInstanceOf(IsFunctionNameOf.EC)
 					|| edge.isInstanceOf(IsSyntaxElementOf.EC)) {
-				appendable.append(((Literal) edge.getThat()).get_value());
+				String term = ((Literal) edge.getThat()).get_value();
+				appendable.append(quote ? quote(term) : term);
 			} else if (edge.isInstanceOf(IsElementOf.EC)) {
 				appendable.append(delim);
 				convertTerm(appendable, (Term) edge.getThat(), quote);

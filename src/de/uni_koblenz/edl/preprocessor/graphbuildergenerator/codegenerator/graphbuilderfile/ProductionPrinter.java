@@ -525,7 +525,15 @@ public class ProductionPrinter {
 					|| edge.isInstanceOf(IsSyntaxElementOf.EC)
 					|| edge.isInstanceOf(IsElementOf.EC)) {
 				appendable.append(delim);
-				printTerm(appendable, (Term) edge.getThat(), grammarType);
+				Term childTerm = (Term) edge.getThat();
+				if (edge.isInstanceOf(IsFunctionNameOf.EC)
+						&& childTerm.isInstanceOf(Literal.VC)) {
+					appendable.append(((Literal) childTerm).get_value());
+				} else if (edge.isInstanceOf(IsElementOf.EC)) {
+					printTerm(appendable, childTerm, grammarType, false);
+				} else {
+					printTerm(appendable, childTerm, grammarType);
+				}
 				if (grammarType == GrammarType.CONTEXT_FREE) {
 					delim = " cf(LAYOUT?) ";
 				} else {
