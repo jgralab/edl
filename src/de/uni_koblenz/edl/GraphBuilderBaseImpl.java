@@ -1413,15 +1413,16 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 	protected Vertex blessTemporaryVertex(Vertex tempVertex,
 			VertexClass targetVertexClass,
 			SymbolTableStack... involvedSymbolTables) {
+		Vertex newVertex = tempVertex;
 		if (tempVertex.isTemporary()) {
 			Position pos = positionsMap.get(tempVertex);
-			Vertex newVertex = tempVertex.bless(targetVertexClass);
+			newVertex = tempVertex.bless(targetVertexClass);
 			positionsMap.put(newVertex, pos);
 			for (SymbolTableStack symbolTable : involvedSymbolTables) {
 				symbolTable.updateValue(tempVertex, newVertex);
 			}
 		}
-		return tempVertex;
+		return newVertex;
 	}
 
 	private final Map<String, RecordDomain> recordDomains = new HashMap<String, RecordDomain>();
