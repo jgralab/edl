@@ -319,4 +319,20 @@ public class SymbolTableStack {
 		}
 		return sb.toString();
 	}
+
+	public void updateValue(Vertex oldVertex, Vertex newVertex) {
+		if (bottom != null) {
+			updateValue(bottom, oldVertex, newVertex);
+		}
+	}
+
+	private void updateValue(Map map, Vertex oldVertex, Vertex newVertex) {
+		map.updateValue(oldVertex, newVertex);
+		List<Map> children = map.getChildren();
+		if (children != null) {
+			for (Map child : children) {
+				updateValue(child, oldVertex, newVertex);
+			}
+		}
+	}
 }

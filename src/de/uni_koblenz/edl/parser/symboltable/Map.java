@@ -3,6 +3,7 @@ package de.uni_koblenz.edl.parser.symboltable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import de.uni_koblenz.edl.InternalGraphBuilder;
 import de.uni_koblenz.jgralab.TemporaryVertex;
@@ -197,6 +198,14 @@ public class Map {
 	@Override
 	public String toString() {
 		return map.toString();
+	}
+
+	public void updateValue(Vertex oldVertex, Vertex newVertex) {
+		for (Entry<Object, Vertex> entry : map.entrySet()) {
+			if (entry.getValue() == oldVertex) {
+				entry.setValue(newVertex);
+			}
+		}
 	}
 
 }

@@ -39,6 +39,7 @@ import de.uni_koblenz.edl.parser.Position;
 import de.uni_koblenz.edl.parser.RuleType;
 import de.uni_koblenz.edl.parser.TreeTraverser;
 import de.uni_koblenz.edl.parser.stack.elements.StackElement;
+import de.uni_koblenz.edl.parser.symboltable.SymbolTableStack;
 import de.uni_koblenz.edl.preprocessor.GrammarException;
 import de.uni_koblenz.ist.utilities.option_handler.OptionHandler;
 import de.uni_koblenz.jgralab.AttributedElement;
@@ -1410,11 +1411,15 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 	}
 
 	protected Vertex blessTemporaryVertex(Vertex tempVertex,
-			VertexClass targetVertexClass) {
+			VertexClass targetVertexClass,
+			SymbolTableStack... involvedSymbolTables) {
 		if (tempVertex.isTemporary()) {
 			Position pos = positionsMap.get(tempVertex);
-			tempVertex = tempVertex.bless(targetVertexClass);
-			positionsMap.put(tempVertex, pos);
+			Vertex newVertex = tempVertex.bless(targetVertexClass);
+			positionsMap.put(newVertex, pos);
+			for (SymbolTableStack symbolTable : involvedSymbolTables) {
+				symbolTable.updateValue(tempVertex, newVertex);
+			}
 		}
 		return tempVertex;
 	}
