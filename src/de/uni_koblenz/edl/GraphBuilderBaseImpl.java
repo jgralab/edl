@@ -320,21 +320,39 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 	 * @return {@link String} content of <code>inputFile</code>
 	 * @throws IOException
 	 */
-	private String readInput(String inputFile, String encoding)
+	protected String readInput(String inputFile, String encoding)
+			throws IOException {
+		return readInput(
+				new BufferedInputStream(new FileInputStream(inputFile)),
+				encoding);
+	}
+
+	/**
+	 * Reads and returns the input of <code>inputFile</code>.
+	 * <code>encoding</code> is the used encoding to read <code>inputFile</code>
+	 * .
+	 * 
+	 * @param inputStream
+	 *            {@link InputStream} the read input stream which is going to be
+	 *            closed at the end
+	 * @param encoding
+	 *            {@link String} encoding to read <code>inputFile</code>
+	 * @return {@link String} content of <code>inputFile</code>
+	 * @throws IOException
+	 */
+	protected String readInput(InputStream inputStream, String encoding)
 			throws IOException {
 		StringBuilder sb = new StringBuilder();
-		BufferedInputStream bis = null;
 		try {
-			bis = new BufferedInputStream(new FileInputStream(inputFile));
 			byte[] input = new byte[4069];
 			int read;
-			while ((read = bis.read(input)) > 0) {
+			while ((read = inputStream.read(input)) > 0) {
 				sb.append(new String(input, 0, read, Charset.forName(encoding)));
 			}
 			return sb.toString();
 		} finally {
-			if (bis != null) {
-				bis.close();
+			if (inputStream != null) {
+				inputStream.close();
 			}
 			inputSize += sb.length();
 		}
