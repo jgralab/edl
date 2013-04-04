@@ -64,19 +64,35 @@ public class ApplicationOfWhitespaceRule extends ApplicationOfGeneratedRule {
 	@Override
 	public void createDefaultValue() {
 		assert !isResultAlreadySet;
-		if (getNumberOfChildren() == 2
-				&& getChild(0).getAppliedRule().getType() == RuleType.WHITESPACE) {
+		if (getNumberOfChildren() == 2) {
 			// cf(LAYOUT) cf(LAYOUT) -> cf(LAYOUT) {left}
-			// and first cf(LAYOUT) is the same rule
-			result = getChild(0).getResult();
-			if (getChild(1).getResult() != null) {
-				((List) result).add(getChild(1));
+			Object resultOfFirstChild = getChild(0).getResult();
+			Object resultOfSecondChild = getChild(1).getResult();
+			if (resultOfFirstChild instanceof List) {
+				result = resultOfFirstChild;
+			} else {
+				result = new LinkedList<Object>();
+				if (resultOfFirstChild != null) {
+					((List) result).add(resultOfFirstChild);
+				}
+			}
+			if (resultOfSecondChild != null) {
+				if (resultOfSecondChild instanceof List) {
+					((List) result).addAll((List<?>) resultOfSecondChild);
+				} else {
+					((List) result).add(resultOfSecondChild);
+				}
 			}
 		} else {
 			result = new LinkedList();
-			if (getNumberOfChildren() > 1 && getChild(1).getResult() != null) {
+			if (getNumberOfChildren() == 1 && getChild(0).getResult() != null) {
 				// cf(LAYOUT) -> cf(LAYOUT?)
-				((List) result).add(getChild(1).getResult());
+				Object resultOfFirstChild = getChild(0).getResult();
+				if (resultOfFirstChild instanceof List) {
+					((List) result).addAll((List<?>) resultOfFirstChild);
+				} else {
+					((List) result).add(resultOfFirstChild);
+				}
 			}
 		}
 	}
