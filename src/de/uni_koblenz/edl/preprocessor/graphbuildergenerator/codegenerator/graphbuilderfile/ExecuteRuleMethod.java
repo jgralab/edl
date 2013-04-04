@@ -63,10 +63,12 @@ public class ExecuteRuleMethod implements ExecuteMethodGenerator {
 	public void generateCode(Appendable appendable, Module module,
 			SemanticActionGenerator semanticActionGenerator) throws IOException {
 		assert methodName != null : "getMethodName(String prefix) must be called first!";
-		String currentJavaDoc = javaDocPrefix + "\t * Rule " + rule.getNumber()
+		String currentJavaDoc = javaDocPrefix
+				+ "\t * Rule "
+				+ rule.getNumber()
 				+ ": "
 				+ rule.toString().replace(">", "&gt;").replace("<", "&lt;")
-				+ "\n";
+						.replace("/", "&#47") + "\n";
 
 		appendable.append("\n\t/**\n");
 		appendable.append(currentJavaDoc);
@@ -117,9 +119,12 @@ public class ExecuteRuleMethod implements ExecuteMethodGenerator {
 
 		for (Entry<Integer, ExecutePositionMethod> entry : executePositionMethods
 				.entrySet()) {
-			currentJavaDoc = javaDocPrefix + "\t * Rule " + rule.getNumber()
-					+ ": " + rule.toStringWithMarkedPosition(entry.getKey())
-					+ "\n";
+			currentJavaDoc = javaDocPrefix
+					+ "\t * Rule "
+					+ rule.getNumber()
+					+ ": "
+					+ rule.toStringWithMarkedPosition(entry.getKey()).replace(
+							"/", "&#47") + "\n";
 			entry.getValue().setJavaDocPrefix(currentJavaDoc);
 			entry.getValue().generateCode(appendable, module,
 					semanticActionGenerator);
@@ -127,8 +132,12 @@ public class ExecuteRuleMethod implements ExecuteMethodGenerator {
 
 		for (Entry<Integer, ExecuteTermMethod> entry : executeTermMethods
 				.entrySet()) {
-			currentJavaDoc = javaDocPrefix + "\t * Rule " + rule.getNumber()
-					+ ": " + rule.toStringWithMarkedTerm(entry.getKey()) + "\n";
+			currentJavaDoc = javaDocPrefix
+					+ "\t * Rule "
+					+ rule.getNumber()
+					+ ": "
+					+ rule.toStringWithMarkedTerm(entry.getKey()).replace("/",
+							"&#47") + "\n";
 			entry.getValue().setJavaDocPrefix(currentJavaDoc);
 			entry.getValue().generateCode(appendable, module,
 					semanticActionGenerator);

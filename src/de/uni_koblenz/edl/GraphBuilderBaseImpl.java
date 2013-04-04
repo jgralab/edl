@@ -89,6 +89,8 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 	 */
 	public static boolean printDebugInformationToTheConsole = false;
 
+	public static List<Option> furtherCommandLineOptions = new ArrayList<Option>();
+
 	/**
 	 * Processes all command line parameters and parses the input.
 	 * {@link #printDebugInformationToTheConsole} is set to <code>true</code>.
@@ -154,7 +156,9 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 		oh.setArgumentCount(Option.UNLIMITED_VALUES);
 		oh.setArgumentName("inputFiles");
 
-		declareFurtherCommandLineArguments(oh);
+		for (Option o : furtherCommandLineOptions) {
+			oh.addOption(o);
+		}
 
 		// Parses the given command line parameters with all created Option.
 		CommandLine cml = oh.parse(args);
@@ -172,17 +176,13 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 		}
 		String[] inputFiles = cml.getArgs();
 		String outputFile = cml.getOptionValue("output");
-		processFurtherCommandLineArguments(cml);
+		((GraphBuilderBaseImpl) graphBuilder)
+				.processFurtherCommandLineArguments(cml);
 		graphBuilder.parse(inputFiles, outputFile, enc, debugMode, verboseMode,
 				dotMode, dotOutputFormat);
 	}
 
-	protected static void declareFurtherCommandLineArguments(
-			OptionHandler optionHandler) {
-	}
-
-	protected static void processFurtherCommandLineArguments(
-			CommandLine commandLine) {
+	protected void processFurtherCommandLineArguments(CommandLine commandLine) {
 	}
 
 	/*
