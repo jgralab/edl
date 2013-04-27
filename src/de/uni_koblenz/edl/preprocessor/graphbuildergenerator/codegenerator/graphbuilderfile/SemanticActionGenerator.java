@@ -176,6 +176,8 @@ public class SemanticActionGenerator {
 											+ definedRule.toString()))
 					.append(" + \"\\n\"");
 		}
+		appendable
+				.append("\n\t\t\t\t+ \"at input position:\" + currentElement.getPosition() + \"\\n\"");
 		appendable.append(" + t.toString(), t);\n");
 		appendable.append("\t\t}\n");
 	}
@@ -257,6 +259,8 @@ public class SemanticActionGenerator {
 											+ definedRule.toString()))
 					.append(" + \"\\n\"");
 		}
+		appendable
+				.append("\n\t\t\t\t+ \"at input position:\" + currentElement.getPosition() + \"\\n\"");
 		appendable.append(" + t.toString(), t);\n");
 		appendable.append("\t\t}\n");
 	}
