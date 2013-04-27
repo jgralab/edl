@@ -434,6 +434,7 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 			TreeTraverser treeTraverser) throws SGLRException, ParseError,
 			IOException, InvalidParseTableException {
 		resetMeasuredValues();
+		addToInputSize(input.length());
 		InputStream parseTableStream = null;
 		try {
 			if (parseTable == null) {
