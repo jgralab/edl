@@ -1579,6 +1579,8 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 		} else if (domain instanceof IntegerDomain) {
 			if (attrValue instanceof String) {
 				return Integer.parseInt((String) attrValue);
+			} else if (attrValue instanceof Character) {
+				return (int) ((Character) attrValue).charValue();
 			}
 		} else if (domain instanceof LongDomain) {
 			if (attrValue instanceof String) {
