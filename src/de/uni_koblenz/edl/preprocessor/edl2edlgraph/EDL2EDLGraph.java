@@ -8208,14 +8208,22 @@ public class EDL2EDLGraph extends EDL2EDLGraphBaseImpl {
 					"Variables are not allowed in default velues sections."));
 		}
 		if (isInLhsOfAssignment) {
-			throw new GrammarException(createMessageString(currentElement,
-					"A symbol table must not be assigned a value."));
+			throw new GrammarException(
+					createMessageString(
+							currentElement,
+							"A symbol table must not be assigned a value."
+									+ " Perhaps you forgot a $ in front of the name of a temporary variable."));
 		}
 		String symbolTableName = currentElement.getChild(0).getLexem();
 		Vertex symbolTableDefinition = symbolTableTable.use(symbolTableName);
 		if (symbolTableDefinition == null) {
-			throw new GrammarException(createMessageString(currentElement,
-					"Symbol table \"" + symbolTableName + "\" is undefined."));
+			throw new GrammarException(
+					createMessageString(
+							currentElement,
+							"Symbol table \""
+									+ symbolTableName
+									+ "\" is undefined."
+									+ " Perhaps you forgot a $ in front of the name of a temporary variable."));
 		}
 
 		Vertex symbolTableVariable = createVertex(SymbolTableVariable.VC,
