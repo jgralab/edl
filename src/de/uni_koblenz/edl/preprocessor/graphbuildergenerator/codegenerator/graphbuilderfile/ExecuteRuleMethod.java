@@ -68,7 +68,7 @@ public class ExecuteRuleMethod implements ExecuteMethodGenerator {
 				+ rule.getNumber()
 				+ ": "
 				+ rule.toString().replace(">", "&gt;").replace("<", "&lt;")
-						.replace("/", "&#47") + "\n";
+						.replace("*/", "*&#47") + "\n";
 
 		appendable.append("\n\t/**\n");
 		appendable.append(currentJavaDoc);
@@ -123,8 +123,8 @@ public class ExecuteRuleMethod implements ExecuteMethodGenerator {
 					+ "\t * Rule "
 					+ rule.getNumber()
 					+ ": "
-					+ rule.toStringWithMarkedPosition(entry.getKey()).replace(
-							"/", "&#47") + "\n";
+					+ rule.toStringWithMarkedPosition(entry.getKey())
+							.replaceAll("([^\\<])(\\/)", "$1&#47") + "\n";
 			entry.getValue().setJavaDocPrefix(currentJavaDoc);
 			entry.getValue().generateCode(appendable, module,
 					semanticActionGenerator);
@@ -136,8 +136,8 @@ public class ExecuteRuleMethod implements ExecuteMethodGenerator {
 					+ "\t * Rule "
 					+ rule.getNumber()
 					+ ": "
-					+ rule.toStringWithMarkedTerm(entry.getKey()).replace("/",
-							"&#47") + "\n";
+					+ rule.toStringWithMarkedTerm(entry.getKey()).replace("*/",
+							"*&#47") + "\n";
 			entry.getValue().setJavaDocPrefix(currentJavaDoc);
 			entry.getValue().generateCode(appendable, module,
 					semanticActionGenerator);

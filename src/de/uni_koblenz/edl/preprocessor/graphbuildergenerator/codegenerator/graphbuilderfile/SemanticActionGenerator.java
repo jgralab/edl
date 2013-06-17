@@ -111,7 +111,7 @@ public class SemanticActionGenerator {
 				sb.append("<br>\n");
 				sb.append("\t * rule: ")
 						.append(definedRule.toString().replace(">", "&gt;")
-								.replace("<", "&lt;").replace("/", "&#47"))
+								.replace("<", "&lt;").replace("*/", "*&#47"))
 						.append("\n");
 			} else {
 				sb.append("\n");
@@ -1020,7 +1020,7 @@ public class SemanticActionGenerator {
 				userCodeMethod
 						.append("\t * rule: ")
 						.append(definedRule.toString().replace(">", "&gt;")
-								.replace("<", "&lt;").replace("/", "&#47"))
+								.replace("<", "&lt;").replace("*/", "*&#47"))
 						.append("\n");
 			} else {
 				userCodeMethod.append("\n");
