@@ -1565,6 +1565,9 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 			}
 			return attrValue;
 		}
+		if (attrValue == null) {
+			return attrValue;
+		}
 		Attribute attribute = attrElement.getAttributedElementClass()
 				.getAttribute(attrName);
 		if (attribute == null) {
