@@ -407,6 +407,9 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 		} catch (InvalidParseTableException e) {
 			throw new GrammarException("Exception during parsing of input "
 					+ inputFile + ".", e);
+		} catch (InterruptedException e) {
+			throw new GrammarException("Exception during parsing of input "
+					+ inputFile + ".", e);
 		}
 	}
 
@@ -429,10 +432,11 @@ public abstract class GraphBuilderBaseImpl implements InternalGraphBuilder {
 	 * @throws ParseError
 	 * @throws IOException
 	 * @throws InvalidParseTableException
+	 * @throws InterruptedException
 	 */
 	private Graph parseInput(String inputFile, String input,
 			TreeTraverser treeTraverser) throws SGLRException, ParseError,
-			IOException, InvalidParseTableException {
+			IOException, InvalidParseTableException, InterruptedException {
 		resetMeasuredValues();
 		addToInputSize(input.length());
 		InputStream parseTableStream = null;
